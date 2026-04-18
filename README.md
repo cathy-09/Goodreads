@@ -1,1 +1,1 @@
-![header](https://capsule-render.vercel.app/api?type=waving&height=300&width=100%&color=gradient&text=Goodreads&section=header&desc=%0A•%20Track%20books%20•%20Reviews%20•%20Lists&descSize=18&descAlignY=70)
+<img src="https://capsule-render.vercel.app/api?type=waving&height=250&color=gradient&text=Goodreads&fontSize=54&desc=%E2%80%A2%20Track%20books%20%E2%80%A2%20Reviews%20%E2%80%A2%20Lists&descSize=18&descAlignY=65" width="100%" />
