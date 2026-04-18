@@ -1,1 +1,1 @@
-[!header](https://capsule-render.vercel.app/api?type=waving&height=300&color=gradient&text=Goodreads%20-nl-%20Book%20tracker%20and%20more&section=header&desc=•%20Track%20books%20•%20Reviews%20•%20Lists&descSize=18&descAlignY=60)
+![header](https://capsule-render.vercel.app/api?type=waving&height=300&color=gradient&text=Goodreads%20-nl-%20Book%20tracker%20and%20more&section=header&desc=•%20Track%20books%20•%20Reviews%20•%20Lists&descSize=18&descAlignY=60)
