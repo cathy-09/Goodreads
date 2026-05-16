@@ -3,6 +3,14 @@
 #include <vector>
 #include "Date.h"
 #include "Message.h"
+
+enum class UserType 
+{ 
+	Reader, 
+	Author, 
+	Publisher
+};
+
 class User
 {
 private:
@@ -34,5 +42,21 @@ public:
 	static void validateUsername(const std::string& username);
 	static void validatePassword(const std::string& password);
 	static std::string passwordCoded(const std::string& password);
+
+	virtual UserType type() const = 0;
 };
+
+inline std::string userTypeString(UserType type) 
+{
+	switch (type) 
+	{
+	case UserType::Reader:
+		return "Reader";
+	case UserType::Author:
+		return "Author";
+	case UserType::Publisher:
+		return "Publisher";
+	}
+	return "";
+}
 
