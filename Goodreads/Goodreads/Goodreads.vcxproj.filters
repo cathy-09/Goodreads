@@ -42,6 +42,9 @@
     <ClCompile Include="Shelf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Author.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="User.h">
@@ -61,6 +64,9 @@
     </ClInclude>
     <ClInclude Include="Shelf.h">
       <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Author.h">
+      <Filter>Header Files\Users</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
