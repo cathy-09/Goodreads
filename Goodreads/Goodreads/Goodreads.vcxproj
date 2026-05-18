@@ -125,6 +125,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Author.cpp" />
+    <ClCompile Include="Book.cpp" />
     <ClCompile Include="BookEntry.cpp" />
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="Goodreads.cpp" />
@@ -136,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Author.h" />
+    <ClInclude Include="Book.h" />
     <ClInclude Include="BookEntry.h" />
     <ClInclude Include="Date.h" />
     <ClInclude Include="Message.h" />
