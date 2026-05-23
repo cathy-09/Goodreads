@@ -17,3 +17,21 @@ void Shelf::removeBook(const std::string& title)
         }
     }
 }
+
+bool Shelf::hasBook(const std::string& title) const
+{
+    return std::find(books.begin(), books.end(), title) != books.end();
+}
+
+void Shelf::addBook(const std::string& title)
+{
+    if (!hasBook(title))
+    {
+        books.push_back(title);
+    }
+}
+
+int Shelf::size() const
+{
+    return static_cast<int>(books.size());
+}
