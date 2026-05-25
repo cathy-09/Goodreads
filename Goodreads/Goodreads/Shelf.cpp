@@ -2,9 +2,24 @@
 #include <string>
 #include "BookEntry.h"
 
+Shelf::Shelf(const std::string& name, const Date& createdAt) : name(name), createdAt(createdAt)
+{
+
+}
+
 const std::string& Shelf::getName() const
 {
     return name;
+}
+
+const Date& Shelf::getCreatedAt() const
+{
+    return createdAt;
+}
+
+const std::vector<std::string>& Shelf::getBooks() const 
+{ 
+    return books;
 }
 
 void Shelf::removeBook(const std::string& title)

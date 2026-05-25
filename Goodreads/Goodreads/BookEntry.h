@@ -3,9 +3,10 @@
 
 enum class ReadStatus 
 { 
-	WantToRead, 
-	Reading, 
-	Read
+    PlanToRead, 
+    Reading,
+    Paused,
+    Dropped
 };
 
 

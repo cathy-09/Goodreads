@@ -34,34 +34,42 @@ void BookEntry::setRating(int newRating)
 
 ReadStatus BookEntry::parseStatus(const std::string& string)
 {
-    if (string == "WantToRead")
+    if (string == "PlanToRead")
     {
-        return ReadStatus::WantToRead;
+        return ReadStatus::PlanToRead;
     }
     if (string == "Reading")
     {
         return ReadStatus::Reading;
     }
-    if (string == "Read")
+    if (string == "Paused")
     {
-        return ReadStatus::Read;
+        return ReadStatus::Paused;
+    }
+    if (string == "Dropped")
+    {
+        return ReadStatus::Dropped;
     }
     throw std::invalid_argument("Unknown ReadStatus: " + string);
 }
 
 std::string BookEntry::statusToString(ReadStatus string)
 {
-    if (string == ReadStatus::WantToRead)
+    if (string == ReadStatus::PlanToRead)
     {
-        return "WantToRead";
+        return "PlanToRead";
     }
     if (string == ReadStatus::Reading)
     {
         return "Reading";
     }
-    if (string == ReadStatus::Read)
+    if (string == ReadStatus::Paused)
     {
-        return "Read";
+        return "Paused";
+    }
+    if (string == ReadStatus::Dropped)
+    {
+        return "Dropped";
     }
     return "Unknown";
 }
