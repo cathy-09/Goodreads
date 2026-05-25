@@ -44,7 +44,7 @@ public:
 	static void validatePassword(const std::string& password);
 	static std::string passwordCoded(const std::string& password);
 
-	std::string userTypeString(UserType type);
+	static std::string userTypeString(UserType type);
 
 	virtual UserType type() const = 0;
 };
