@@ -127,8 +127,6 @@
     <ClCompile Include="Author.cpp" />
     <ClCompile Include="Book.cpp" />
     <ClCompile Include="BookEntry.cpp" />
-    <ClCompile Include="Command.cpp" />
-    <ClCompile Include="CommandsApp.cpp" />
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="Goodreads.cpp" />
     <ClCompile Include="Message.cpp" />
@@ -141,8 +139,6 @@
     <ClInclude Include="Author.h" />
     <ClInclude Include="Book.h" />
     <ClInclude Include="BookEntry.h" />
-    <ClInclude Include="Command.h" />
-    <ClInclude Include="CommandsApp.h" />
     <ClInclude Include="Date.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="Publisher.h" />

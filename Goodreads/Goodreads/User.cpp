@@ -27,6 +27,15 @@ bool User::hasFollower(const std::string& follower) const
 	return std::find(followers.begin(), followers.end(), follower) != followers.end();
 }
 
+void User::removeFollower(const std::string& follower)
+{
+	auto followerIterator = std::find(followers.begin(), followers.end(), follower);
+	if (followerIterator != followers.end())
+	{
+		followers.erase(followerIterator);
+	}
+}
+
 void User::receiveMessage(const Message& message)
 {
 	inbox.push_back(message);
@@ -81,6 +90,20 @@ void User::validatePassword(const std::string& password)
 std::string User::passwordCoded(const std::string& password)
 {
 	return password;
+}
+
+std::string User::userTypeString(UserType type)
+{
+	switch (type)
+	{
+	case UserType::Reader:
+		return "Reader";
+	case UserType::Author:
+		return "Author";
+	case UserType::Publisher:
+		return "Publisher";
+	}
+	return "";
 }
 
 const std::string& User::getUsername() const

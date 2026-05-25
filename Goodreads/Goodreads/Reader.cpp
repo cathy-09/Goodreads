@@ -23,6 +23,18 @@ BookEntry* Reader::findBook(const std::string& title)
     return nullptr;
 }
 
+const BookEntry* Reader::findBook(const std::string& title) const
+{
+    for (auto& entry : books)
+    {
+        if (entry.getBookTitle() == title)
+        {
+            return &entry;
+        }
+    }
+    return nullptr;
+}
+
 bool Reader::hasBook(const std::string& title) const 
 {
     for (const auto& entry : books)
@@ -115,6 +127,21 @@ void Reader::addBook(const BookEntry& book)
     }
 }
 
+void Reader::deleteBook(const std::string& title)
+{
+    auto foundBookIterator = std::find_if(books.begin(), books.end(),
+        [&](const BookEntry& bookEntry)
+        {
+            return bookEntry.getBookTitle() == title;
+        });
+    if (foundBookIterator != books.end())
+    {
+        books.erase(foundBookIterator);
+        removeBookFromAllShelves(title);
+        removeFavorite(title);
+    }
+}
+
 void Reader::createShelf(const Shelf& shelf)
 {
     if (!shelfExists(shelf.getName()))
@@ -145,7 +172,21 @@ void Reader::addFavorite(const std::string& title)
     }
 }
 
+void Reader::removeFavorite(const std::string& title)
+{
+    auto favoriteBookIterator = std::find(favorites.begin(), favorites.end(), title);
+    if (favoriteBookIterator != favorites.end())
+    {
+        favorites.erase(favoriteBookIterator);
+    }
+}
+
 void Reader::setBirthday(const Date& date)
 {
     birthday = date;
+}
+
+void Reader::clearBirthday()
+{
+    birthday = {};
 }

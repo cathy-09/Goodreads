@@ -26,6 +26,7 @@ public:
 	bool checkPassword(const std::string& password) const;
 	void addFollower(const std::string& follower);
 	bool hasFollower(const std::string& follower) const;
+	void removeFollower(const std::string& follower);
 	void receiveMessage(const Message& message);
 
 	const std::string& getUsername() const;
@@ -43,20 +44,7 @@ public:
 	static void validatePassword(const std::string& password);
 	static std::string passwordCoded(const std::string& password);
 
+	std::string userTypeString(UserType type);
+
 	virtual UserType type() const = 0;
 };
-
-inline std::string userTypeString(UserType type) 
-{
-	switch (type) 
-	{
-	case UserType::Reader:
-		return "Reader";
-	case UserType::Author:
-		return "Author";
-	case UserType::Publisher:
-		return "Publisher";
-	}
-	return "";
-}
-

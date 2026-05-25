@@ -10,12 +10,12 @@ private:
 public:
 	Author() = default;
 	Author(const std::string& username, const std::string& password, const Date& registrationDate);
+
 	UserType type() const override;
 	void addPublishedBook(const std::string& title);
 	bool worksWithPublisher(const std::string& publisher) const;
 	void addPublisher(const std::string& publisher);
 	void removePublisher(const std::string& publisher);
-
 
 	const std::vector<std::string>& getPublishedBooks() const;
 	const std::vector<std::string>& getPublishers() const;
