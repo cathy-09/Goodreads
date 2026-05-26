@@ -63,6 +63,9 @@
     <ClCompile Include="Search.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GoodreadsApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="User.h">
@@ -96,6 +99,9 @@
       <Filter>Header Files\Files</Filter>
     </ClInclude>
     <ClInclude Include="Search.h">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GoodreadsApp.h">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
   </ItemGroup>

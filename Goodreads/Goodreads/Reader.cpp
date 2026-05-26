@@ -1,4 +1,5 @@
 #include "Reader.h"
+#include "GoodreadsApp.h"
 
 Reader::Reader(const std::string& username, const std::string& password, const Date& registrationDate)
     : User(username, password, registrationDate)
@@ -11,7 +12,7 @@ UserType Reader::type() const
     return UserType::Reader;
 }
 
-BookEntry* Reader::findBook(const std::string& title) 
+BookEntry* Reader::findBook(const std::string& title)
 {
     for (auto& entry : books)
     {

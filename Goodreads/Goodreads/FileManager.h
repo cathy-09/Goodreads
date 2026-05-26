@@ -10,8 +10,6 @@
 class FileManager
 {
 private:
-    static std::string intToString(int value);
-
     static void writeLine(std::ofstream& outFile, const std::string& line);
     static std::string readLine(std::ifstream& inFile);
 
@@ -32,5 +30,6 @@ private:
 public:
     static void save(const std::string& filename, const std::vector<std::unique_ptr<User>>& users, const std::vector<Book>& books);
     static void load(const std::string& filename, std::vector<std::unique_ptr<User>>& users, std::vector<Book>& books);
+    static std::string intToString(int value);
 };
 
