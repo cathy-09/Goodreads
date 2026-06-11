@@ -14,6 +14,19 @@ std::string Search::toLowerCase(const std::string& text)
     return result;
 }
 
+int Search::countDifferences(const std::string& firstString, const std::string& secondString)
+{
+    int differences = 0;
+    for (size_t i = 0; i < firstString.size(); ++i)
+    {
+        if (firstString[i] != secondString[i])
+        {
+            ++differences;
+        }
+    }
+    return differences;
+}
+
 
 bool Search::matches(const std::string& query, const std::string& target)
 {
@@ -24,9 +37,5 @@ bool Search::matches(const std::string& query, const std::string& target)
     std::string smallQuery = toLowerCase(query);
     std::string smallTarget = toLowerCase(target);
     size_t position = smallTarget.find(smallQuery);
-    if (position == -1)
-    {
-        return false;
-    }
-    return true;
+    return position != static_cast<size_t>(-1);
 }
