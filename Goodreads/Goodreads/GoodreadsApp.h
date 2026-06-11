@@ -20,6 +20,8 @@ private:
     std::vector<std::string> tokenize(const std::string& line) const;
     std::string joinFrom(const std::vector<std::string>& tokens, int startIndex) const;
     bool tryParseInt(const std::string& text, int& parsedNumber) const;
+    bool validateRating(const std::string& ratingStr, int& rating, std::string& error) const;
+    bool validateBookForReader(const std::string& title, Reader* reader, Book*& book, std::string& error);
 
     std::string cmdHelp() const;
 

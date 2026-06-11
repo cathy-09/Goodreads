@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "Publisher.h"
 
 Publisher::Publisher(const std::string& username, const std::string& password, const Date& registrationDate)

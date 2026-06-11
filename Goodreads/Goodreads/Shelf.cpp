@@ -1,5 +1,6 @@
 #include "Shelf.h"
 #include <string>
+#include <algorithm>
 #include "BookEntry.h"
 
 Shelf::Shelf(const std::string& name, const Date& createdAt) : name(name), createdAt(createdAt)

@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "Reader.h"
 #include "GoodreadsApp.h"
 

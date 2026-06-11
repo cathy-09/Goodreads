@@ -1,4 +1,6 @@
+#include <algorithm>
 #include "Author.h"
+
 Author::Author(const std::string& username, const std::string& password, const Date& registrationDate)
 	:Reader(username, password, registrationDate)
 {

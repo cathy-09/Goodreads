@@ -312,6 +312,34 @@ bool GoodreadsApp::tryParseInt(const std::string& text, int& parsedNumber) const
     return true;
 }
 
+bool GoodreadsApp::validateRating(const std::string& ratingStr, int& rating, std::string& error) const
+{
+    rating = 0;
+    if (!tryParseInt(ratingStr, rating) || rating < 1 || rating > 5)
+    {
+        error = "Rating must be a number between 1 and 5.";
+        return false;
+    }
+    return true;
+}
+
+bool GoodreadsApp::validateBookForReader(const std::string& title, Reader* reader, Book*& book, std::string& error)
+{
+    book = findBook(title);
+    if (!book)
+    {
+        error = "Book not found: " + title;
+        return false;
+    }
+    if (reader->hasBook(title))
+    {
+        error = "You already have '" + title + "' in your profile.";
+        return false;
+    }
+    return true;
+}
+
+
 std::string GoodreadsApp::cmdHelp() const
 {
     std::string result;
@@ -504,5 +532,53 @@ std::string GoodreadsApp::cmdFollow(const std::vector<std::string>& tokens)
     std::string message = currentUser->getUsername() + " started following you.";
     target->receiveMessage(Message(currentUser->getUsername(), message, MessageType::FollowNotice));
     return "You are now following " + targetName + ".";
+}
+
+std::string GoodreadsApp::cmdAddBook(const std::vector<std::string>& tokens)
+{
+    if (tokens.size() < 3)
+    {
+        return "add-book <bookTitle> <status> [rating]";
+    }
+    Reader* reader = dynamic_cast<Reader*>(currentUser);
+    if (!reader)
+    {
+        return "Only readers and authors can add books.";
+    }
+
+    const std::string& title = tokens[1];
+    Book* book = nullptr;
+    std::string error;
+
+    if (!validateBookForReader(title, reader, book, error))
+    {
+        return error;
+    }
+
+    ReadStatus status;
+    try
+    {
+        status = BookEntry::parseStatus(tokens[2]);
+    }
+    catch (const std::exception&)
+    {
+        return "Invalid status. Helps for status: plan-to-read, reading, paused, dropped";
+    }
+
+    int rating = 0;
+    if (tokens.size() >= 4)
+    {
+        if (!validateRating(tokens[3], rating, error))
+        {
+            return error;
+        }
+    }
+
+    reader->addBook(BookEntry(title, status, rating));
+    if (rating > 0)
+    {
+        book->addRating(rating);
+    }
+    return "'" + title + "' added to ur profile.";
 }
 
