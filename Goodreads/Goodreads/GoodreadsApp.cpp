@@ -594,6 +594,17 @@ std::string GoodreadsApp::formatFollowersList(const std::vector<std::string>& fo
     return result;
 }
 
+std::string GoodreadsApp::validateMessageIndex(int index, Message*& message)
+{
+    auto& inbox = currentUser->getInbox();
+    if (index < 1 || index >(int)inbox.size())
+    {
+        return "Invalid index.";
+    }
+    message = &inbox[index - 1];
+    return "";
+}
+
 void GoodreadsApp::unlinkAuthorFromPublisher(Author* author, const std::string& publisherName)
 {
     author->removePublisher(publisherName);
@@ -1175,7 +1186,43 @@ std::string GoodreadsApp::cmdOffer(const std::vector<std::string>& tokens)
 
 std::string GoodreadsApp::cmdAcceptOffer(const std::vector<std::string>& tokens)
 {
-    return std::string();
+    Author* author = dynamic_cast<Author*>(currentUser);
+    if (!author)
+    {
+        return "Only authors can accept job offers.";
+    }
+    if (tokens.size() < 2)
+    {
+        return "Usage: accept-offer <index>";
+    }
+
+    int index = 0;
+    if (!tryParseInt(tokens[1], index))
+    {
+        return "Invalid index.";
+    }
+
+    Message* message = nullptr;
+    std::string error = validateMessageIndex(index, message);
+    if (!error.empty())
+    {
+        return error;
+    }
+    if (!message->isJobOffer())
+    {
+        return "Message [" + FileManager::intToString(index) + "] is not a job offer.";
+    }
+
+    Publisher* publisher = dynamic_cast<Publisher*>(findUser(message->getFrom()));
+    if (!publisher)
+    {
+        return "The publisher no longer exists.";
+    }
+
+    author->addPublisher(publisher->getUsername());
+    publisher->addAuthor(author->getUsername());
+    message->markRead();
+    return "You accepted the offer from " + publisher->getUsername() + ". You are now working together.";
 }
 
 std::string GoodreadsApp::cmdLeave(const std::vector<std::string>& tokens)
