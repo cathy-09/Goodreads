@@ -339,6 +339,146 @@ bool GoodreadsApp::validateBookForReader(const std::string& title, Reader* reade
     return true;
 }
 
+bool GoodreadsApp::validateShelfAccess(const std::string& bookTitle, const std::string& shelfName, Reader* reader, Shelf*& shelf, std::string& error)
+{
+    if (!reader->hasBook(bookTitle))
+    {
+        error = "You don't have " + bookTitle + " in ur profile.";
+        return false;
+    }
+
+    shelf = reader->findShelf(shelfName);
+
+    if (!shelf)
+    {
+        error = "Shelf " + shelfName + " does not exist.";
+        return false;
+    }
+
+    return true;
+}
+
+bool GoodreadsApp::validateShelfExists(const std::string& shelfName, Reader* reader, Shelf*& shelf, std::string& error)
+{
+    shelf = reader->findShelf(shelfName);
+    if (!shelf)
+    {
+        error = "Shelf " + shelfName + " does not exist.";
+        return false;
+    }
+    return true;
+}
+
+void GoodreadsApp::removeRating(const std::string& title, Reader* reader)
+{
+    const BookEntry* entry = reader->findBook(title);
+    if (!entry || entry->getRating() == 0)
+    {
+        return;
+    }
+    Book* book = findBook(title);
+    if (!book)
+    {
+        return;
+    }
+    if (book->getRatingCount() > 1)
+    {
+        book->updateRating(entry->getRating(), 0);
+        book->setRatingCount(book->getRatingCount() - 1);
+    }
+    else
+    {
+        book->setAverageRating(0.0);
+        book->setRatingCount(0);
+    }
+}
+
+const Reader* GoodreadsApp::resolveTargetReader(const std::string& readerName, std::string& error) const
+{
+    if (!isFriends(currentUser->getUsername(), readerName))
+    {
+        error = "Access denied. You must be friends with " + readerName + " to view their shelves.";
+        return nullptr;
+    }
+    const User* otherUser = findUser(readerName);
+    if (!otherUser)
+    {
+        error = "User not found: " + readerName;
+        return nullptr;
+    }
+    const Reader* reader = dynamic_cast<const Reader*>(otherUser);
+    if (!reader)
+    {
+        error = readerName + " is not a reader.";
+        return nullptr;
+    }
+    return reader;
+}
+
+std::string GoodreadsApp::formatShelf(const Shelf* shelf) const
+{
+    std::string result = "Shelf: " + shelf->getName() + " (" + FileManager::intToString(shelf->size()) + " books)\n";
+
+    result += "Created: " + shelf->getCreatedAt().toDateString() + "\n";
+
+    if (shelf->getBooks().empty())
+    {
+        return result + "(empty)\n";
+    }
+
+    for (const auto& bookTitle : shelf->getBooks())
+    {
+        result += " - " + bookTitle;
+        const Book* book = findBook(bookTitle);
+        if (book)
+        {
+            result += " (" + FileManager::intToString((int)book->getAverageRating()) + ")";
+        }
+        result += "\n";
+    }
+    return result;
+}
+
+std::string GoodreadsApp::formatMessage(const Message& message, int index) const
+{
+    std::string result = "[" + FileManager::intToString(index) + "] ";
+    if (message.isRead())
+    {
+        result += "  ";
+    }
+    else
+    {
+        result += "* ";
+    }
+    result += "From " + message.getFrom();
+    if (message.isJobOffer())
+    {
+        result += " [Job Offer]";
+    }
+    if (message.isFollowNotice())
+    {
+        result += " [Follow]";
+    }
+    if (message.isBookNotice())
+    {
+        result += " [New Book]";
+    }
+    result += ": " + message.getContent() + "\n";
+    return result;
+}
+
+bool GoodreadsApp::messageMatchesFilter(const Message& message, bool jobOffersOnly, bool followsOnly) const
+{
+    if (jobOffersOnly)
+    {
+        return message.isJobOffer();
+    }
+    if (followsOnly)
+    {
+        return message.isFollowNotice();
+    }
+    return true;
+}
 
 std::string GoodreadsApp::cmdHelp() const
 {
@@ -579,6 +719,298 @@ std::string GoodreadsApp::cmdAddBook(const std::vector<std::string>& tokens)
     {
         book->addRating(rating);
     }
-    return "'" + title + "' added to ur profile.";
+    return "" + title + " added to ur profile.";
+}
+
+std::string GoodreadsApp::cmdCreateShelf(const std::vector<std::string>& tokens)
+{
+    if (tokens.size() < 2)
+    {
+        return "create-shelf <name>";
+    }
+
+    Reader* reader = dynamic_cast<Reader*>(currentUser);
+
+    if (!reader)
+    {
+        return "Only readers and authors can create shelves.";
+    }
+
+    const std::string& name = tokens[1];
+
+    if (reader->shelfExists(name))
+    {
+        return "A shelf named " + name + " already exists.";
+    }
+
+    Date today(20, 6, 2026);
+    reader->createShelf(Shelf(name, today));
+    return "Shelf '" + name + "' created.";
+}
+
+std::string GoodreadsApp::cmdDeleteShelf(const std::vector<std::string>& tokens)
+{
+    if (tokens.size() < 2)
+    {
+        return "delete-shelf <name>";
+    }
+
+    Reader* reader = dynamic_cast<Reader*>(currentUser);
+
+    if (!reader)
+    {
+        return "Only readers and authors can delete shelves.";
+    }
+
+    const std::string& name = tokens[1];
+
+    if (!reader->shelfExists(name))
+    {
+        return "Shelf " + name + " does not exist.";
+    }
+
+    reader->deleteShelf(name);
+    return "Shelf " + name + " deleted.";
+}
+
+std::string GoodreadsApp::cmdAddToShelf(const std::vector<std::string>& tokens)
+{
+    if (tokens.size() < 3)
+    {
+        return "add-to-shelf <bookTitle> <shelfName>";
+    }
+    Reader* reader = dynamic_cast<Reader*>(currentUser);
+    if (!reader)
+    {
+        return "Only readers and authors can organize shelves.";
+    }
+
+    const std::string& bookTitle = tokens[1];
+    const std::string& shelfName = tokens[2];
+    Shelf* shelf = nullptr;
+    std::string error;
+
+    if (!validateShelfAccess(bookTitle, shelfName, reader, shelf, error))
+    {
+        return error;
+    }
+    if (shelf->hasBook(bookTitle))
+    {
+        return "'" + bookTitle + " is already on shelf " + shelfName + ".";
+    }
+    shelf->addBook(bookTitle);
+    return "'" + bookTitle + " added to shelf " + shelfName + "'.";
+}
+
+std::string GoodreadsApp::cmdRemoveFromShelf(const std::vector<std::string>& tokens)
+{
+    if (tokens.size() < 3)
+    {
+        return " remove-from-shelf <bookTitle> <shelfName>";
+    }
+    Reader* reader = dynamic_cast<Reader*>(currentUser);
+    if (!reader)
+    {
+        return "Only readers and authors can organize shelves.";
+    }
+
+    const std::string& bookTitle = tokens[1];
+    const std::string& shelfName = tokens[2];
+    Shelf* shelf = nullptr;
+    std::string error;
+
+    if (!validateShelfExists(shelfName, reader, shelf, error))
+    {
+        return error;
+    }
+
+    if (!shelf->hasBook(bookTitle))
+    {
+        return "" + bookTitle + " is not on shelf " + shelfName + ".";
+    }
+    shelf->removeBook(bookTitle);
+    return "" + bookTitle + " removed from shelf " + shelfName + ".";
+}
+
+std::string GoodreadsApp::cmdDeleteBook(const std::vector<std::string>& tokens)
+{
+    if (tokens.size() < 2)
+    {
+        return "delete-book <bookTitle>";
+    }
+
+    Reader* reader = dynamic_cast<Reader*>(currentUser);
+
+    if (!reader)
+    {
+        return "Only readers and authors can delete books from their profile.";
+    }
+
+    const std::string& title = tokens[1];
+
+    if (!reader->hasBook(title))
+    {
+        return "You don't have " + title + " in ur profile.";
+    }
+
+    removeRating(title, reader);
+    reader->deleteBook(title);
+    return "" + title + " removed from your profile.";
+}
+
+std::string GoodreadsApp::cmdShowShelf(const std::vector<std::string>& tokens) const
+{
+    if (tokens.size() < 2)
+    {
+        return "Usage: show-shelf [readerName] <shelfName>";
+    }
+    const Reader* targetReader = dynamic_cast<const Reader*>(currentUser);
+    if (!targetReader)
+    {
+        return "Only readers and authors can view shelves.";
+    }
+
+    std::string shelfName = tokens[1];
+    if (tokens.size() >= 3)
+    {
+        std::string error;
+        targetReader = resolveTargetReader(tokens[1], error);
+        if (!targetReader)
+        {
+            return error;
+        }
+        shelfName = tokens[2];
+    }
+
+    const Shelf* shelf = targetReader->findShelf(shelfName);
+    if (!shelf)
+    {
+        return "Shelf '" + shelfName + "' does not exist.";
+    }
+    return formatShelf(shelf);
+}
+
+std::string GoodreadsApp::cmdShowInbox(const std::vector<std::string>& tokens) const
+{
+    if (!currentUser)
+    {
+        return "Not logged in.";
+    }
+
+    bool jobOffersOnly = tokens.size() >= 2 && tokens[1] == "job-offers";
+    bool followsOnly = tokens.size() >= 2 && tokens[1] == "follow-notices";
+
+    const auto& inbox = currentUser->getInbox();
+
+    if (inbox.empty())
+    {
+        return "Your inbox is empty.";
+    }
+
+    std::string result;
+    int index = 1;
+    for (const auto& message : inbox)
+    {
+        if (messageMatchesFilter(message, jobOffersOnly, followsOnly))
+        {
+            result += formatMessage(message, index);
+        }
+        ++index;
+    }
+
+    if (result.empty())
+    {
+        return "No messages matching the filter.";
+    }
+    return result;
+}
+
+std::string GoodreadsApp::cmdReadMsg(const std::vector<std::string>& tokens)
+{
+    if (tokens.size() < 2)
+    {
+        return "read-msg <index>";
+    }
+    int index = 0;
+    if (!tryParseInt(tokens[1], index) || index < 1)
+    {
+        return "Invalid index.";
+    }
+    auto& inbox = currentUser->getInbox();
+    if (index > (int)inbox.size())
+    {
+        return "Invalid index.";
+    }
+    inbox[index - 1].markRead();
+    return "Message [" + FileManager::intToString(index) + "] marked as read.";
+}
+
+std::string GoodreadsApp::cmdDeleteMsg(const std::vector<std::string>& tokens)
+{
+    if (tokens.size() < 2)
+    {
+        return "delete-msg <index>";
+    }
+    int index = 0;
+    if (!tryParseInt(tokens[1], index) || index < 1)
+    {
+        return "Invalid index.";
+    }
+    auto& inbox = currentUser->getInbox();
+    if (index > (int)inbox.size())
+    {
+        return "Invalid index.";
+    }
+    if (!inbox[index - 1].isRead())
+    {
+        return "Cannot delete an unread message. Mark it as read first.";
+    }
+    inbox.erase(inbox.begin() + (index - 1));
+    return "Message deleted.";
+}
+
+std::string GoodreadsApp::cmdFriends(const std::vector<std::string>& tokens) const
+{
+    return std::string();
+}
+
+std::string GoodreadsApp::cmdAddBirthday(const std::vector<std::string>& tokens)
+{
+    return std::string();
+}
+
+std::string GoodreadsApp::cmdProfile(const std::vector<std::string>& tokens) const
+{
+    return std::string();
+}
+
+std::string GoodreadsApp::cmdPublish(const std::vector<std::string>& tokens)
+{
+    return std::string();
+}
+
+std::string GoodreadsApp::cmdAddSynopsis(const std::vector<std::string>& tokens)
+{
+    return std::string();
+}
+
+std::string GoodreadsApp::cmdOffer(const std::vector<std::string>& tokens)
+{
+    return std::string();
+}
+
+std::string GoodreadsApp::cmdAcceptOffer(const std::vector<std::string>& tokens)
+{
+    return std::string();
+}
+
+std::string GoodreadsApp::cmdLeave(const std::vector<std::string>& tokens)
+{
+    return std::string();
+}
+
+std::string GoodreadsApp::cmdFollowers()
+{
+    return std::string();
 }
 

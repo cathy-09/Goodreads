@@ -3,6 +3,8 @@
 #include <memory>
 #include "User.h"
 #include "Book.h"
+#include "Shelf.h"
+#include "Reader.h"
 class GoodreadsApp
 {
 private:
@@ -22,6 +24,13 @@ private:
     bool tryParseInt(const std::string& text, int& parsedNumber) const;
     bool validateRating(const std::string& ratingStr, int& rating, std::string& error) const;
     bool validateBookForReader(const std::string& title, Reader* reader, Book*& book, std::string& error);
+    bool validateShelfAccess(const std::string& bookTitle, const std::string& shelfName, Reader* reader, Shelf*& shelf, std::string& error);
+    bool validateShelfExists(const std::string& shelfName, Reader* reader, Shelf*& shelf, std::string& error);
+    void removeRating(const std::string& title, Reader* reader);
+    const Reader* resolveTargetReader(const std::string& readerName, std::string& error) const;
+    std::string formatShelf(const Shelf* shelf) const;
+    std::string formatMessage(const Message& message, int index) const;
+    bool messageMatchesFilter(const Message& message, bool jobOffersOnly, bool followsOnly) const;
 
     std::string cmdHelp() const;
 
