@@ -40,6 +40,9 @@ private:
     std::string formatReaderProfile(const Reader* reader) const;
     std::string formatFollowersList(const std::vector<std::string>& followers) const;
 
+
+    std::string validateAuthorTarget(const std::string& authorName, Author*& author);
+
     std::string validateMessageIndex(int index, Message*& message);
 
     void unlinkAuthorFromPublisher(Author* author, const std::string& publisherName);

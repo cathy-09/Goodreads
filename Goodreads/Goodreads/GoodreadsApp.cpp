@@ -594,6 +594,21 @@ std::string GoodreadsApp::formatFollowersList(const std::vector<std::string>& fo
     return result;
 }
 
+std::string GoodreadsApp::validateAuthorTarget(const std::string& authorName, Author*& author)
+{
+    User* user = findUser(authorName);
+    if (!user)
+    {
+        return "User not found: " + authorName;
+    }
+    author = dynamic_cast<Author*>(user);
+    if (!author)
+    {
+        return authorName + " is not an author.";
+    }
+    return "";
+}
+
 std::string GoodreadsApp::validateMessageIndex(int index, Message*& message)
 {
     auto& inbox = currentUser->getInbox();
@@ -1181,7 +1196,26 @@ std::string GoodreadsApp::cmdAddSynopsis(const std::vector<std::string>& tokens)
 
 std::string GoodreadsApp::cmdOffer(const std::vector<std::string>& tokens)
 {
-    return std::string();
+    Publisher* publisher = dynamic_cast<Publisher*>(currentUser);
+    if (!publisher)
+    {
+        return "Only publishers can send job offers.";
+    }
+    if (tokens.size() < 2)
+    {
+        return "offer <authorName>";
+    }
+
+    Author* author = nullptr;
+    std::string error = validateAuthorTarget(tokens[1], author);
+    if (!error.empty())
+    {
+        return error;
+    }
+
+    std::string content = "Publisher " + publisher->getUsername() + " is offering you a collaboration.";
+    author->receiveMessage(Message(publisher->getUsername(), content, MessageType::JobOffer));
+    return "Job offer sent to " + tokens[1] + ".";
 }
 
 std::string GoodreadsApp::cmdAcceptOffer(const std::vector<std::string>& tokens)
