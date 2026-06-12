@@ -32,6 +32,7 @@ private:
     std::string formatMessage(const Message& message, int index) const;
     bool messageMatchesFilter(const Message& message, bool jobOffersOnly, bool followsOnly) const;
     const Reader* resolveReader(const std::string& username, std::string& error) const;
+    std::string formatFriendsList(const Reader* targetReader) const;
 
     std::string cmdHelp() const;
 

@@ -485,6 +485,35 @@ const Reader* GoodreadsApp::resolveReader(const std::string& username, std::stri
     return reader;
 }
 
+std::string GoodreadsApp::formatFriendsList(const Reader* targetReader) const
+{
+    std::string result = "Friends of " + targetReader->getUsername() + ":\n";
+    bool hasFriends = false;
+
+    for (const auto& followerName : targetReader->getFollowers())
+    {
+        const User* other = findUser(followerName);
+
+        if (!other)
+        {
+            continue;
+        }
+
+        if (other->hasFollower(targetReader->getUsername()))
+        {
+            result += "  " + followerName + " (" +User::userTypeString(other->type()) + ")\n";
+            hasFriends = true;
+        }
+    }
+
+    if (!hasFriends)
+    {
+        result += "  (none)\n";
+    }
+
+    return result;
+}
+
 std::string GoodreadsApp::cmdHelp() const
 {
     std::string result;
@@ -976,7 +1005,23 @@ std::string GoodreadsApp::cmdDeleteMsg(const std::vector<std::string>& tokens)
 
 std::string GoodreadsApp::cmdFriends(const std::vector<std::string>& tokens) const
 {
-    return std::string();
+    const Reader* targetReader = dynamic_cast<const Reader*>(currentUser);
+    if (!targetReader)
+    {
+        return "Only readers and authors have friends.";
+    }
+
+    if (tokens.size() >= 2)
+    {
+        std::string error;
+        targetReader = resolveReader(tokens[1], error);
+        if (!targetReader)
+        {
+            return error;
+        }
+    }
+
+    return formatFriendsList(targetReader);
 }
 
 std::string GoodreadsApp::cmdAddBirthday(const std::vector<std::string>& tokens)
