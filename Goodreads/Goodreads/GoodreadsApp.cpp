@@ -594,6 +594,16 @@ std::string GoodreadsApp::formatFollowersList(const std::vector<std::string>& fo
     return result;
 }
 
+void GoodreadsApp::unlinkAuthorFromPublisher(Author* author, const std::string& publisherName)
+{
+    author->removePublisher(publisherName);
+    Publisher* publisher = dynamic_cast<Publisher*>(findUser(publisherName));
+    if (publisher)
+    {
+        publisher->removeAuthor(author->getUsername());
+    }
+}
+
 std::string GoodreadsApp::cmdHelp() const
 {
     std::string result;
@@ -1170,7 +1180,24 @@ std::string GoodreadsApp::cmdAcceptOffer(const std::vector<std::string>& tokens)
 
 std::string GoodreadsApp::cmdLeave(const std::vector<std::string>& tokens)
 {
-    return std::string();
+    Author* author = dynamic_cast<Author*>(currentUser);
+    if (!author)
+    {
+        return "Only authors can leave a publisher.";
+    }
+    if (tokens.size() < 2)
+    {
+        return "leave <publisherName>";
+    }
+
+    const std::string& publisherName = tokens[1];
+    if (!author->worksWithPublisher(publisherName))
+    {
+        return "You are not working with publisher " + publisherName + ".";
+    }
+
+    unlinkAuthorFromPublisher(author, publisherName);
+    return "You left publisher " + publisherName + ".";
 }
 
 std::string GoodreadsApp::cmdFollowers()

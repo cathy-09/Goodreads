@@ -40,6 +40,8 @@ private:
     std::string formatReaderProfile(const Reader* reader) const;
     std::string formatFollowersList(const std::vector<std::string>& followers) const;
 
+    void unlinkAuthorFromPublisher(Author* author, const std::string& publisherName);
+
     std::string cmdHelp() const;
 
     std::string cmdRegister(const std::vector<std::string>& tokens);
