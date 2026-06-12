@@ -400,19 +400,7 @@ const Reader* GoodreadsApp::resolveTargetReader(const std::string& readerName, s
         error = "Access denied. You must be friends with " + readerName + " to view their shelves.";
         return nullptr;
     }
-    const User* otherUser = findUser(readerName);
-    if (!otherUser)
-    {
-        error = "User not found: " + readerName;
-        return nullptr;
-    }
-    const Reader* reader = dynamic_cast<const Reader*>(otherUser);
-    if (!reader)
-    {
-        error = readerName + " is not a reader.";
-        return nullptr;
-    }
-    return reader;
+    return resolveReader(readerName, error);
 }
 
 std::string GoodreadsApp::formatShelf(const Shelf* shelf) const
@@ -478,6 +466,23 @@ bool GoodreadsApp::messageMatchesFilter(const Message& message, bool jobOffersOn
         return message.isFollowNotice();
     }
     return true;
+}
+
+const Reader* GoodreadsApp::resolveReader(const std::string& username, std::string& error) const
+{
+    const User* user = findUser(username);
+    if (!user)
+    {
+        error = "User not found: " + username;
+        return nullptr;
+    }
+    const Reader* reader = dynamic_cast<const Reader*>(user);
+    if (!reader)
+    {
+        error = username + " is not a reader.";
+        return nullptr;
+    }
+    return reader;
 }
 
 std::string GoodreadsApp::cmdHelp() const
