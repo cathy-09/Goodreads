@@ -40,6 +40,10 @@ private:
     std::string formatReaderProfile(const Reader* reader) const;
     std::string formatFollowersList(const std::vector<std::string>& followers) const;
 
+    std::string validatePublishArgs(const std::vector<std::string>& tokens, int& pageCount, Date& releaseDate) const;
+    std::vector<std::string> extractGenres(const std::vector<std::string>& tokens) const;
+    void linkAuthorToPublication(Author* author, Publisher* publisher, const std::string& title);
+
     std::string validateBookOwnership(const std::string& title, Book*& book);
 
     std::string validateAuthorTarget(const std::string& authorName, Author*& author);

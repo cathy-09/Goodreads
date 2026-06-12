@@ -594,6 +594,39 @@ std::string GoodreadsApp::formatFollowersList(const std::vector<std::string>& fo
     return result;
 }
 
+std::string GoodreadsApp::validatePublishArgs(const std::vector<std::string>& tokens, int& pageCount, Date& releaseDate) const
+{
+    if (!tryParseInt(tokens[4], pageCount) || pageCount < 1)
+    {
+        return "Page count must be a positive number.";
+    }
+    try
+    {
+        releaseDate = Date::parserForDates(tokens[3]);
+    }
+    catch (const std::exception& e)
+    {
+        return std::string("Invalid date: ") + e.what();
+    }
+    return "";
+}
+
+std::vector<std::string> GoodreadsApp::extractGenres(const std::vector<std::string>& tokens) const
+{
+    return std::vector<std::string>(tokens.begin() + 5, tokens.end());
+}
+
+void GoodreadsApp::linkAuthorToPublication(Author* author, Publisher* publisher, const std::string& title)
+{
+    if (!author)
+    {
+        return;
+    }
+    author->addPublishedBook(title);
+    author->addPublisher(publisher->getUsername());
+    publisher->addAuthor(author->getUsername());
+}
+
 std::string GoodreadsApp::validateBookOwnership(const std::string& title, Book*& book)
 {
     book = findBook(title);
@@ -1200,7 +1233,39 @@ std::string GoodreadsApp::cmdProfile(const std::vector<std::string>& tokens) con
 
 std::string GoodreadsApp::cmdPublish(const std::vector<std::string>& tokens)
 {
-    return std::string();
+    Publisher* publisher = dynamic_cast<Publisher*>(currentUser);
+    if (!publisher)
+    {
+        return "Only publishers can publish books.";
+    }
+    if (tokens.size() < 6)
+    {
+        return "publish <bookTitle> <authorName> <releaseDate> <pageCount> <genre1> <genre2> ...";
+    }
+
+    const std::string& title = tokens[1];
+    const std::string& authorName = tokens[2];
+
+    if (findBook(title))
+    {
+        return "A book with title " + title + " already exists.";
+    }
+
+    int  pageCount = 0;
+    Date releaseDate;
+    std::string error = validatePublishArgs(tokens, pageCount, releaseDate);
+    if (!error.empty())
+    {
+        return error;
+    }
+
+    books.push_back(Book(title, authorName, publisher->getUsername(), releaseDate, pageCount, extractGenres(tokens)));
+    publisher->addPublishedBook(title);
+
+    linkAuthorToPublication(dynamic_cast<Author*>(findUser(authorName)), publisher, title);
+    notifyFollowers(authorName, publisher->getUsername(), title);
+
+    return "Book " + title + " published successfully.";
 }
 
 std::string GoodreadsApp::cmdAddSynopsis(const std::vector<std::string>& tokens)
