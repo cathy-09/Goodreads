@@ -40,6 +40,7 @@ private:
     std::string formatReaderProfile(const Reader* reader) const;
     std::string formatFollowersList(const std::vector<std::string>& followers) const;
 
+    std::string validateBookOwnership(const std::string& title, Book*& book);
 
     std::string validateAuthorTarget(const std::string& authorName, Author*& author);
 

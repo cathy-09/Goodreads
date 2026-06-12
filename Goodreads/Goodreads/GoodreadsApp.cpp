@@ -594,6 +594,20 @@ std::string GoodreadsApp::formatFollowersList(const std::vector<std::string>& fo
     return result;
 }
 
+std::string GoodreadsApp::validateBookOwnership(const std::string& title, Book*& book)
+{
+    book = findBook(title);
+    if (!book)
+    {
+        return "Book not found: " + title;
+    }
+    if (book->getPublisher() != currentUser->getUsername())
+    {
+        return "You can only edit books published by you.";
+    }
+    return "";
+}
+
 std::string GoodreadsApp::validateAuthorTarget(const std::string& authorName, Author*& author)
 {
     User* user = findUser(authorName);
@@ -1191,7 +1205,24 @@ std::string GoodreadsApp::cmdPublish(const std::vector<std::string>& tokens)
 
 std::string GoodreadsApp::cmdAddSynopsis(const std::vector<std::string>& tokens)
 {
-    return std::string();
+    if (!dynamic_cast<Publisher*>(currentUser))
+    {
+        return "Only publishers can add a synopsis.";
+    }
+    if (tokens.size() < 3)
+    {
+        return "add-synopsis <bookTitle> <synopsis>";
+    }
+
+    Book* book = nullptr;
+    std::string error = validateBookOwnership(tokens[1], book);
+    if (!error.empty())
+    {
+        return error;
+    }
+
+    book->setSummary(joinFrom(tokens, 2));
+    return "Synopsis added to " + tokens[1] + ".";
 }
 
 std::string GoodreadsApp::cmdOffer(const std::vector<std::string>& tokens)
