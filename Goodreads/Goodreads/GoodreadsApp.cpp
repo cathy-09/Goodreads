@@ -514,6 +514,86 @@ std::string GoodreadsApp::formatFriendsList(const Reader* targetReader) const
     return result;
 }
 
+std::string GoodreadsApp::parseBirthday(const std::string& dateStr, Date& birthday) const
+{
+    try
+    {
+        birthday = Date::parserForDates(dateStr);
+        return "";
+    }
+    catch (const std::exception& exception)
+    {
+        return std::string("Invalid date: ") + exception.what();
+    }
+}
+
+std::string GoodreadsApp::formatPublisherProfile(const User* user) const
+{
+    std::string result = " " + user->getUsername() + " (Publisher) \n";
+    result += "Registered: " + user->getRegistrationDate().toDateString() + "\n";
+    result += "Followers: " + FileManager::intToString((int)user->getFollowers().size()) + "\n";
+    return result;
+}
+
+std::string GoodreadsApp::formatShelves(const Reader* reader) const
+{
+    std::string result = "\nShelves (" + FileManager::intToString((int)reader->getShelves().size()) + "):\n";
+    for (const auto& shelf : reader->getShelves())
+    {
+        result += "  " + shelf.getName() + " (" + FileManager::intToString(shelf.size()) + " books)\n";
+    }
+    return result;
+}
+
+std::string GoodreadsApp::formatFavorites(const Reader* reader) const
+{
+    std::string result = "\nFavorite books (" + FileManager::intToString((int)reader->getFavorites().size()) + "):\n";
+    if (reader->getFavorites().empty())
+    {
+        return result + "  (none)\n";
+    }
+    for (const auto& fav : reader->getFavorites())
+    {
+        result += "  " + fav + "\n";
+    }
+    return result;
+}
+
+std::string GoodreadsApp::formatReaderProfile(const Reader* reader) const
+{
+    std::string result = " " + reader->getUsername();
+    result += " (" + User::userTypeString(reader->type()) + ") n";
+    result += "Registered: " + reader->getRegistrationDate().toDateString() + "\n";
+    if (reader->getBirthday())
+    {
+        result += "Birthday: " + reader->getBirthday()->toDateString() + "\n";
+    }
+    result += "Followers: " + FileManager::intToString((int)reader->getFollowers().size()) + "\n";
+    result += formatShelves(reader);
+    result += formatFavorites(reader);
+    return result;
+}
+
+std::string GoodreadsApp::formatFollowersList(const std::vector<std::string>& followers) const
+{
+    if (followers.empty())
+    {
+        return "  (none)\n";
+    }
+    std::string result;
+    for (const auto& followerName : followers)
+    {
+        result += "  " + followerName;
+        const User* user = findUser(followerName);
+        if (user)
+        {
+            result += " (" + User::userTypeString(user->type()) + ")";
+        }
+        result += "\n";
+    }
+    return result;
+}
+
 std::string GoodreadsApp::cmdHelp() const
 {
     std::string result;
@@ -1026,12 +1106,46 @@ std::string GoodreadsApp::cmdFriends(const std::vector<std::string>& tokens) con
 
 std::string GoodreadsApp::cmdAddBirthday(const std::vector<std::string>& tokens)
 {
-    return std::string();
+    Reader* reader = dynamic_cast<Reader*>(currentUser);
+    if (!reader)
+    {
+        return "Only readers and authors can set a birthday.";
+    }
+    if (tokens.size() < 2)
+    {
+        reader->clearBirthday();
+        return "Birthday removed from your profile.";
+    }
+
+    Date birthday;
+    std::string error = parseBirthday(tokens[1], birthday);
+    if (!error.empty())
+    {
+        return error;
+    }
+    reader->setBirthday(birthday);
+    return "Birthday set to " + birthday.toDateString() + ".";
 }
 
 std::string GoodreadsApp::cmdProfile(const std::vector<std::string>& tokens) const
 {
-    return std::string();
+    const Reader* targetReader = dynamic_cast<const Reader*>(currentUser);
+
+    if (tokens.size() >= 2)
+    {
+        std::string error;
+        targetReader = resolveReader(tokens[1], error);
+        if (!targetReader)
+        {
+            return error;
+        }
+    }
+
+    if (!targetReader)
+    {
+        return formatPublisherProfile(currentUser);
+    }
+    return formatReaderProfile(targetReader);
 }
 
 std::string GoodreadsApp::cmdPublish(const std::vector<std::string>& tokens)
@@ -1061,6 +1175,14 @@ std::string GoodreadsApp::cmdLeave(const std::vector<std::string>& tokens)
 
 std::string GoodreadsApp::cmdFollowers()
 {
-    return std::string();
+    if (!currentUser)
+    {
+        return "Not logged in.";
+    }
+    const auto& followers = currentUser->getFollowers();
+    std::string result = "Followers of " + currentUser->getUsername();
+    result += " (" + FileManager::intToString((int)followers.size()) + "):\n";
+    result += formatFollowersList(followers);
+    return result;
 }
 

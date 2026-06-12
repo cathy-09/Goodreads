@@ -33,6 +33,12 @@ private:
     bool messageMatchesFilter(const Message& message, bool jobOffersOnly, bool followsOnly) const;
     const Reader* resolveReader(const std::string& username, std::string& error) const;
     std::string formatFriendsList(const Reader* targetReader) const;
+    std::string parseBirthday(const std::string& dateStr, Date& birthday) const;
+    std::string formatPublisherProfile(const User* user) const;
+    std::string formatShelves(const Reader* reader) const;
+    std::string formatFavorites(const Reader* reader) const;
+    std::string formatReaderProfile(const Reader* reader) const;
+    std::string formatFollowersList(const std::vector<std::string>& followers) const;
 
     std::string cmdHelp() const;
 
