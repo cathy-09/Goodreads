@@ -1,4 +1,6 @@
 #include "Date.h"
+#include "GoodreadsException.h"
+#include "DateException.h"
 #include <string>
 #include <stdexcept>
 
@@ -11,7 +13,7 @@ Date Date::parserForDates(const std::string& string)
 {
     if (string.size() != 10 || string[2] != '.' || string[5] != '.')
     {
-        throw std::invalid_argument("Date format: DD.MM.YYYY");
+        throw DateException("Date format: DD.MM.YYYY");
     }
     int days = (string[0] - '0') * 10 + (string[1] - '0');
     int months = (string[3] - '0') * 10 + (string[4] - '0');
@@ -52,15 +54,15 @@ void Date::validate() const
 {
     if (month < 1 || month > 12)
     {
-        throw std::invalid_argument("Invalid month");
+        throw DateException("Invalid month");
     }
     if (year < 1 || year > 2026)
     {
-        throw std::invalid_argument("Invalid year");
+        throw DateException("Invalid year");
     }
     if (day < 1 || day > daysInMonth(month, year))
     {
-        throw std::invalid_argument("Invalid date for that month");
+        throw DateException("Invalid date for that month");
     }
 }
 

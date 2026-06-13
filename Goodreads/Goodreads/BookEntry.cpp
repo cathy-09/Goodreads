@@ -1,4 +1,6 @@
 #include "BookEntry.h"
+#include "GoodreadsException.h"
+#include "ValidationException.h"
 #include <string>
 #include <stdexcept>
 
@@ -50,7 +52,7 @@ ReadStatus BookEntry::parseStatus(const std::string& string)
     {
         return ReadStatus::Dropped;
     }
-    throw std::invalid_argument("Unknown ReadStatus: " + string);
+    throw ValidationException("Unknown ReadStatus: " + string);
 }
 
 std::string BookEntry::statusToString(ReadStatus string)

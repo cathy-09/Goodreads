@@ -1,4 +1,6 @@
 #include "Book.h"
+#include "GoodreadsException.h"
+#include "RatingException.h"
 #include <stdexcept>
 
 Book::Book(const std::string& title, const std::string& author,
@@ -15,7 +17,7 @@ void Book::addRating(int rating)
 {
     if (rating < 1 || rating > 5)
     {
-        throw std::invalid_argument("Rating must be 1-5.");
+        throw RatingException("Rating must be 1-5.");
     }
     averageRating = (averageRating * ratingCount + rating) / (ratingCount + 1);
     ++ratingCount;
@@ -30,7 +32,7 @@ void Book::updateRating(int oldRating, int newRating)
     }
     if (oldRating < 1 || oldRating > 5 || newRating < 1 || newRating > 5)
     {
-        throw std::invalid_argument("Rating must be 1-5.");
+        throw RatingException("Rating must be 1-5.");
     }
     averageRating = ((averageRating * ratingCount) - oldRating + newRating) / ratingCount;
 }

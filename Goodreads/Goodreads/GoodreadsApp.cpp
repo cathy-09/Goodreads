@@ -5,6 +5,7 @@
 #include "Search.h"
 #include <filesystem>
 #include <iostream>
+#include "DateException.h"
 
 GoodreadsApp::GoodreadsApp(const std::string& dataFile) : dataFile(dataFile)
 {
@@ -521,7 +522,7 @@ std::string GoodreadsApp::parseBirthday(const std::string& dateStr, Date& birthd
         birthday = Date::parserForDates(dateStr);
         return "";
     }
-    catch (const std::exception& exception)
+    catch (const DateException& exception)
     {
         return std::string("Invalid date: ") + exception.what();
     }
@@ -604,7 +605,7 @@ std::string GoodreadsApp::validatePublishArgs(const std::vector<std::string>& to
     {
         releaseDate = Date::parserForDates(tokens[3]);
     }
-    catch (const std::exception& e)
+    catch (const DateException& e)
     {
         return std::string("Invalid date: ") + e.what();
     }
@@ -765,7 +766,7 @@ std::string GoodreadsApp::cmdRegister(const std::vector<std::string>& tokens)
         users.push_back(std::move(newUser));
         return "Registered successfully as " + typeStr + ": " + username;
     }
-    catch (const std::exception& exception)
+    catch (const ValidationException& exception)
     {
         return std::string("Registration failed: ") + exception.what();
     }
@@ -897,7 +898,7 @@ std::string GoodreadsApp::cmdAddBook(const std::vector<std::string>& tokens)
     {
         status = BookEntry::parseStatus(tokens[2]);
     }
-    catch (const std::exception&)
+    catch (const ValidationException&)
     {
         return "Invalid status. Helps for status: plan-to-read, reading, paused, dropped";
     }

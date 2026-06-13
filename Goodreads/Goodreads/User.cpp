@@ -1,4 +1,6 @@
 #include "User.h"
+#include "GoodreadsException.h"
+#include "ValidationException.h"
 #include <stdexcept>
 #include <algorithm>
 
@@ -45,7 +47,7 @@ void User::validateUsername(const std::string& username)
 {
 	if (username.size() < 6 || username.size() > 24)
 	{
-		throw std::invalid_argument("Username must be between 6 and 24 characters long.");
+		throw ValidationException("Username must be between 6 and 24 characters long.");
 	}
 }
 
@@ -53,7 +55,7 @@ void User::validatePassword(const std::string& password)
 {
 	if (password.size() < 12 || password.size() > 36)
 	{
-		throw std::invalid_argument("Password must be between 12 and 36 characters.");
+		throw ValidationException("Password must be between 12 and 36 characters.");
 	}
 	bool hasLower = false;
 	bool hasUpper = false;
@@ -75,15 +77,15 @@ void User::validatePassword(const std::string& password)
 	}
 	if (!hasLower)
 	{
-		throw std::invalid_argument("Password must contain at least one lowercase letter.");
+		throw ValidationException("Password must contain at least one lowercase letter.");
 	}
 	if (!hasUpper)
 	{
-		throw std::invalid_argument("Password must contain at least one uppercase letter.");
+		throw ValidationException("Password must contain at least one uppercase letter.");
 	}
 	if (!hasNonLetter)
 	{
-		throw std::invalid_argument("Password must contain at least one non-letter character.");
+		throw ValidationException("Password must contain at least one non-letter character.");
 	}
 }
 

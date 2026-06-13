@@ -1,4 +1,5 @@
 #include "FileManager.h"
+#include "FileException.h"
 #include <iostream>
 #include <fstream>
 #include "Author.h"
@@ -9,7 +10,7 @@ void FileManager::save(const std::string& filename, const std::vector<std::uniqu
 	std::ofstream file(filename);
 	if (!file)
 	{
-		throw std::runtime_error("Cannot open file for writing: " + filename);
+		throw FileException("Cannot open file for writing: " + filename);
 	}
 	writeLine(file, intToString(users.size()));
 	for (const auto& userSave : users)
