@@ -6,6 +6,8 @@
 #include <filesystem>
 #include <iostream>
 #include "DateException.h"
+#include "Author.h"
+#include "Publisher.h"
 
 GoodreadsApp::GoodreadsApp(const std::string& dataFile) : dataFile(dataFile)
 {
@@ -151,7 +153,7 @@ void GoodreadsApp::run()
     }
 }
 
-User* GoodreadsApp::findUser(const std::string& username)
+User* GoodreadsApp::findUserMutable(const std::string& username)
 {
     for (auto& userPtr : users)
     {
@@ -212,8 +214,8 @@ bool GoodreadsApp::isFriends(const std::string& firstUsername, const std::string
 
 void GoodreadsApp::notifyFollowers(const std::string& authorName, const std::string& publisherName, const std::string& bookTitle)
 {
-    User* authorUser = findUser(authorName);
-    User* publisherUser = findUser(publisherName);
+    User* authorUser = findUserMutable(authorName);
+    User* publisherUser = findUserMutable(publisherName);
     if (!authorUser || !publisherUser)
     {
         return;
@@ -644,17 +646,19 @@ std::string GoodreadsApp::validateBookOwnership(const std::string& title, Book*&
 
 std::string GoodreadsApp::validateAuthorTarget(const std::string& authorName, Author*& author)
 {
-    User* user = findUser(authorName);
-    if (!user)
+    for (auto& userPtr : users)
     {
-        return "User not found: " + authorName;
+        if (userPtr->getUsername() == authorName)
+        {
+            author = dynamic_cast<Author*>(userPtr.get());
+            if (!author)
+            {
+                return authorName + " is not an author.";
+            }
+            return "";
+        }
     }
-    author = dynamic_cast<Author*>(user);
-    if (!author)
-    {
-        return authorName + " is not an author.";
-    }
-    return "";
+    return "User not found: " + authorName;
 }
 
 std::string GoodreadsApp::validateMessageIndex(int index, Message*& message)
@@ -671,7 +675,7 @@ std::string GoodreadsApp::validateMessageIndex(int index, Message*& message)
 void GoodreadsApp::unlinkAuthorFromPublisher(Author* author, const std::string& publisherName)
 {
     author->removePublisher(publisherName);
-    Publisher* publisher = dynamic_cast<Publisher*>(findUser(publisherName));
+    Publisher* publisher = dynamic_cast<Publisher*>(findUserMutable(publisherName));
     if (publisher)
     {
         publisher->removeAuthor(author->getUsername());
@@ -782,7 +786,7 @@ std::string GoodreadsApp::cmdLogin(const std::vector<std::string>& tokens)
     {
         return "Already logged in as " + currentUser->getUsername() +". Logout first.";
     }
-    User* foundUser = findUser(tokens[1]);
+    User* foundUser = findUserMutable(tokens[1]);
     if (!foundUser || !foundUser->checkPassword(tokens[2]))
     {
         return "Invalid username or password.";
@@ -857,7 +861,7 @@ std::string GoodreadsApp::cmdFollow(const std::vector<std::string>& tokens)
     {
         return "You cannot follow yourself.";
     }
-    User* target = findUser(targetName);
+    User* target = findUserMutable(targetName);
     if (!target)
     {
         return "User not found: " + targetName;
@@ -1263,7 +1267,7 @@ std::string GoodreadsApp::cmdPublish(const std::vector<std::string>& tokens)
     books.push_back(Book(title, authorName, publisher->getUsername(), releaseDate, pageCount, extractGenres(tokens)));
     publisher->addPublishedBook(title);
 
-    linkAuthorToPublication(dynamic_cast<Author*>(findUser(authorName)), publisher, title);
+    linkAuthorToPublication(dynamic_cast<Author*>(findUserMutable(authorName)), publisher, title);
     notifyFollowers(authorName, publisher->getUsername(), title);
 
     return "Book " + title + " published successfully.";
@@ -1344,7 +1348,7 @@ std::string GoodreadsApp::cmdAcceptOffer(const std::vector<std::string>& tokens)
         return "Message [" + FileManager::intToString(index) + "] is not a job offer.";
     }
 
-    Publisher* publisher = dynamic_cast<Publisher*>(findUser(message->getFrom()));
+    Publisher* publisher = dynamic_cast<Publisher*>(findUserMutable(message->getFrom()));
     if (!publisher)
     {
         return "The publisher no longer exists.";

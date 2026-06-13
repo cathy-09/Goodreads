@@ -5,6 +5,9 @@
 #include "Book.h"
 #include "Shelf.h"
 #include "Reader.h"
+#include "Author.h"
+#include "Publisher.h"
+
 class GoodreadsApp
 {
 private:
@@ -13,7 +16,7 @@ private:
     User* currentUser = nullptr;
     std::string dataFile;
 
-    User* findUser(const std::string& username);
+    User* findUserMutable(const std::string& username);
     const User* findUser(const std::string& username) const;
     Book* findBook(const std::string& title);
     const Book* findBook(const std::string& title) const;
