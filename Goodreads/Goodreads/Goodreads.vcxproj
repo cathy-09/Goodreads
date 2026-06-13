@@ -128,29 +128,39 @@
     <ClCompile Include="Book.cpp" />
     <ClCompile Include="BookEntry.cpp" />
     <ClCompile Include="Date.cpp" />
+    <ClCompile Include="DateException.cpp" />
+    <ClCompile Include="FileException.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="Goodreads.cpp" />
     <ClCompile Include="GoodreadsApp.cpp" />
+    <ClCompile Include="GoodreadsException.cpp" />
     <ClCompile Include="Message.cpp" />
     <ClCompile Include="Publisher.cpp" />
+    <ClCompile Include="RatingException.cpp" />
     <ClCompile Include="Reader.cpp" />
     <ClCompile Include="Search.cpp" />
     <ClCompile Include="Shelf.cpp" />
     <ClCompile Include="User.cpp" />
+    <ClCompile Include="ValidationException.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Author.h" />
     <ClInclude Include="Book.h" />
     <ClInclude Include="BookEntry.h" />
     <ClInclude Include="Date.h" />
+    <ClInclude Include="DateException.h" />
+    <ClInclude Include="FileException.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="GoodreadsApp.h" />
+    <ClInclude Include="GoodreadsException.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="Publisher.h" />
+    <ClInclude Include="RatingException.h" />
     <ClInclude Include="Reader.h" />
     <ClInclude Include="Search.h" />
     <ClInclude Include="Shelf.h" />
     <ClInclude Include="User.h" />
+    <ClInclude Include="ValidationException.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
