@@ -27,6 +27,17 @@ int Search::countDifferences(const std::string& firstString, const std::string& 
     return differences;
 }
 
+std::string Search::substring(const std::string& text, size_t start, size_t length)
+{
+    std::string result;
+
+    for (size_t i = start; i < start + length && i < text.size(); i++)
+    {
+        result += text[i];
+    }
+
+    return result;
+}
 
 bool Search::matches(const std::string& query, const std::string& target)
 {
@@ -36,6 +47,21 @@ bool Search::matches(const std::string& query, const std::string& target)
     }
     std::string smallQuery = toLowerCase(query);
     std::string smallTarget = toLowerCase(target);
-    size_t position = smallTarget.find(smallQuery);
-    return position != static_cast<size_t>(-1);
+    if (smallTarget.find(smallQuery) < smallTarget.size())
+    {
+        return true;
+    }
+    if (smallQuery.size() > smallTarget.size())
+    {
+        return false;
+    }
+    for (size_t i = 0; i <= smallTarget.size() - smallQuery.size(); ++i)
+    {
+        std::string targetSubstring = substring(smallTarget, i, smallQuery.size());
+        if (countDifferences(smallQuery, targetSubstring) <= 2)
+        {
+            return true;
+        }
+    }
+    return false;
 }
