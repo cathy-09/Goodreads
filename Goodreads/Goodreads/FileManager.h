@@ -31,5 +31,5 @@ public:
     static void save(const std::string& filename, const std::vector<std::unique_ptr<User>>& users, const std::vector<Book>& books);
     static void load(const std::string& filename, std::vector<std::unique_ptr<User>>& users, std::vector<Book>& books);
     static std::string intToString(int value);
+    static std::string doubleToString(double value, int precision = 2);
 };
-

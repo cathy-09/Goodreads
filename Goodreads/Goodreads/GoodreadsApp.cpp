@@ -122,7 +122,7 @@ void GoodreadsApp::run()
         {
             output = cmdPublish(tokens);
         }
-        else if (cmd == "add-summary")
+        else if (cmd == "add-synopsis")
         {
             output = cmdAddSynopsis(tokens);
         }
@@ -420,7 +420,7 @@ std::string GoodreadsApp::formatShelf(const Shelf* shelf) const
         const Book* book = findBook(bookTitle);
         if (book)
         {
-            result += " (" + FileManager::intToString((int)book->getAverageRating()) + ")";
+            result += " (" + FileManager::doubleToString(book->getAverageRating()) + ")";
         }
         result += "\n";
     }
@@ -562,7 +562,7 @@ std::string GoodreadsApp::formatFavorites(const Reader* reader) const
 std::string GoodreadsApp::formatReaderProfile(const Reader* reader) const
 {
     std::string result = " " + reader->getUsername();
-    result += " (" + User::userTypeString(reader->type()) + ") n";
+    result += " (" + User::userTypeString(reader->type()) + ") \n";
     result += "Registered: " + reader->getRegistrationDate().toDateString() + "\n";
     if (reader->getBirthday())
     {
@@ -829,7 +829,7 @@ std::string GoodreadsApp::cmdSearch(const std::vector<std::string>& tokens) cons
     {
         if (Search::matches(searchQuery, book.getTitle()))
         {
-            result += book.getTitle() + " (" + FileManager::intToString(book.getAverageRating()) + ")\n";
+            result += book.getTitle() + " (" + FileManager::doubleToString(book.getAverageRating()) + ")\n";
             hasBooks = true;
         }
     }

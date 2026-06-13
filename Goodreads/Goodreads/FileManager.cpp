@@ -46,7 +46,7 @@ void FileManager::save(const std::string& filename, const std::vector<std::uniqu
 		writeLine(file, book.getPublisher());
 		writeLine(file, book.getSummary());
 		writeLine(file, encodeList(book.getGenres()));
-		writeLine(file, intToString(book.getAverageRating()));
+		writeLine(file, doubleToString(book.getAverageRating()));
 		writeLine(file, intToString(book.getRatingCount()));
 		writeLine(file, book.getReleaseDate().toDateString());
 		writeLine(file, intToString(book.getPageCount()));
@@ -171,6 +171,28 @@ std::string FileManager::intToString(int value)
 	if (negative)
 	{
 		result.insert(result.begin(), '-');
+	}
+	return result;
+}
+
+std::string FileManager::doubleToString(double value, int precision)
+{
+	std::string result;
+	if (value < 0)
+	{
+		result += '-';
+		value = -value;
+	}
+	int intPart = (int)value;
+	result += FileManager::intToString(intPart);
+	result += '.';
+	double frac = value - intPart;
+	for (int i = 0; i < precision; ++i)
+	{
+		frac *= 10;
+		int digit = (int)frac;
+		result += char('0' + digit);
+		frac -= digit;
 	}
 	return result;
 }
