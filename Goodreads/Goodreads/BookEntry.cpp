@@ -36,19 +36,19 @@ void BookEntry::setRating(int newRating)
 
 ReadStatus BookEntry::parseStatus(const std::string& string)
 {
-    if (string == "PlanToRead")
+    if (string == "plan-to-read" || string == "PlanToRead")
     {
         return ReadStatus::PlanToRead;
     }
-    if (string == "Reading")
+    if (string == "reading" || string == "Reading")
     {
         return ReadStatus::Reading;
     }
-    if (string == "Paused")
+    if (string == "paused" || string == "Paused")
     {
         return ReadStatus::Paused;
     }
-    if (string == "Dropped")
+    if (string == "dropped" || string == "Dropped")
     {
         return ReadStatus::Dropped;
     }
