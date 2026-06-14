@@ -565,13 +565,50 @@ std::string GoodreadsApp::formatFavorites(const Reader* reader) const
 std::string GoodreadsApp::formatReaderProfile(const Reader* reader) const
 {
     std::string result = " " + reader->getUsername();
-    result += " (" + User::userTypeString(reader->type()) + ") \n";
+    result += " (" + User::userTypeString(reader->type()) + ")\n";
     result += "Registered: " + reader->getRegistrationDate().toDateString() + "\n";
     if (reader->getBirthday())
     {
         result += "Birthday: " + reader->getBirthday()->toDateString() + "\n";
     }
     result += "Followers: " + FileManager::intToString((int)reader->getFollowers().size()) + "\n";
+
+    const auto& bookEntries = reader->getBooks();
+    result += "\nBooks (" + FileManager::intToString((int)bookEntries.size()) + "):\n";
+    if (bookEntries.empty())
+    {
+        result += "  (none)\n";
+    }
+    else
+    {
+        for (const auto& entry : bookEntries)
+        {
+            result += " " + entry.getBookTitle() + "\n";
+            result += "Status: " + BookEntry::statusToString(entry.getStatus()) + "\n";
+            if (entry.getRating() > 0)
+            {
+                result += "    Your rating: " + FileManager::intToString(entry.getRating()) + "/5\n";
+            }
+            const Book* book = findBook(entry.getBookTitle());
+            if (book)
+            {
+                result += "Author: " + book->getAuthor() + "\n";
+                result += "Publisher: " + book->getPublisher() + "\n";
+                result += "Pages: " + FileManager::intToString(book->getPageCount()) + "\n";
+                result += "Avg rating: " + FileManager::doubleToString(book->getAverageRating()) + "/5\n";
+                if (!book->getGenres().empty())
+                {
+                    result += "Genres: ";
+                    for (size_t i = 0; i < book->getGenres().size(); ++i)
+                    {
+                        if (i > 0) result += ", ";
+                        result += book->getGenres()[i];
+                    }
+                    result += "\n";
+                }
+            }
+        }
+    }
     result += formatShelves(reader);
     result += formatFavorites(reader);
     return result;
@@ -586,11 +623,15 @@ std::string GoodreadsApp::formatFollowersList(const std::vector<std::string>& fo
     std::string result;
     for (const auto& followerName : followers)
     {
-        result += "  " + followerName;
         const User* user = findUser(followerName);
+        result += "  " + followerName;
         if (user)
         {
             result += " (" + User::userTypeString(user->type()) + ")";
+            if (currentUser && user->hasFollower(currentUser->getUsername()))
+            {
+                result += " [mutual]";
+            }
         }
         result += "\n";
     }
@@ -696,7 +737,7 @@ std::string GoodreadsApp::cmdHelp() const
         return result;
     }
     UserType userType = currentUser->type();
-    if (userType == UserType::Reader || userType == UserType::Author)
+    if (userType == UserType::Reader || userType == UserType::Author || userType == UserType::Publisher)
     {
         result += "\nReader\n";
         result += "search <name>\n";
@@ -727,7 +768,7 @@ std::string GoodreadsApp::cmdHelp() const
     {
         result += "Publisher\n";
         result += "publish <bookTitle> <authorName> <releaseDate> <pageCount> <genres...>\n";
-        result += "add-summary <bookTitle> <summary>\n";
+        result += "add-synopsis <bookTitle> <synopsis>\n";
         result += "offer <authorName>\n";
         result += "followers\n";
     }
@@ -1388,10 +1429,14 @@ std::string GoodreadsApp::cmdFollowers()
     {
         return "Not logged in.";
     }
+    Author* author = dynamic_cast<Author*>(currentUser);
+    if (!author)
+    {
+        return "Only authors can use the followers command.";
+    }
     const auto& followers = currentUser->getFollowers();
     std::string result = "Followers of " + currentUser->getUsername();
     result += " (" + FileManager::intToString((int)followers.size()) + "):\n";
     result += formatFollowersList(followers);
     return result;
 }
-
