@@ -737,7 +737,7 @@ std::string GoodreadsApp::cmdHelp() const
         return result;
     }
     UserType userType = currentUser->type();
-    if (userType == UserType::Reader || userType == UserType::Author || userType == UserType::Publisher)
+    if (userType == UserType::Reader || userType == UserType::Author)
     {
         result += "\nReader\n";
         result += "search <name>\n";
@@ -770,7 +770,7 @@ std::string GoodreadsApp::cmdHelp() const
         result += "publish <bookTitle> <authorName> <releaseDate> <pageCount> <genres...>\n";
         result += "add-synopsis <bookTitle> <synopsis>\n";
         result += "offer <authorName>\n";
-        result += "followers\n";
+        result += "search <name>\n";
     }
     return result;
 }
