@@ -22,6 +22,7 @@ public:
 	void addBook(const BookEntry& book);
 	void deleteBook(const std::string& title);
 	bool hasBook(const std::string& title) const;
+	bool hasFavorite(const std::string& title) const;
 
 	Shelf* findShelf(const std::string& name);
 	const Shelf* findShelf(const std::string& name) const;

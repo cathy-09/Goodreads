@@ -43,6 +43,9 @@ private:
     std::string formatReaderProfile(const Reader* reader) const;
     std::string formatFollowersList(const std::vector<std::string>& followers) const;
 
+    std::string cmdAddFavorite(const std::vector<std::string>& tokens);
+    std::string cmdRemoveFavorite(const std::vector<std::string>& tokens);
+
     std::string validatePublishArgs(const std::vector<std::string>& tokens, int& pageCount, Date& releaseDate) const;
     std::vector<std::string> extractGenres(const std::vector<std::string>& tokens) const;
     void linkAuthorToPublication(Author* author, Publisher* publisher, const std::string& title);

@@ -121,6 +121,14 @@ void GoodreadsApp::run()
         { 
             output = cmdProfile(tokens); 
         }
+        else if (cmd == "add-favorite")
+        {
+            output = cmdAddFavorite(tokens);
+        }
+        else if (cmd == "remove-favorite")
+        {
+            output = cmdRemoveFavorite(tokens);
+        }
         else if (cmd == "publish")
         {
             output = cmdPublish(tokens);
@@ -638,6 +646,50 @@ std::string GoodreadsApp::formatFollowersList(const std::vector<std::string>& fo
     return result;
 }
 
+std::string GoodreadsApp::cmdAddFavorite(const std::vector<std::string>& tokens)
+{
+    if (tokens.size() < 2)
+    {
+        return "add-favorite <bookTitle>";
+    }
+    Reader* reader = dynamic_cast<Reader*>(currentUser);
+    if (!reader)
+    {
+        return "Only readers and authors can add favorite books.";
+    }
+    const std::string& title = tokens[1];
+    if (!reader->hasBook(title))
+    {
+        return "You don't have " + title + " in ur profile. Add it first.";
+    }
+    if (reader->hasFavorite(title))
+    {
+        return "" + title + " is already in your favorites.";
+    }
+    reader->addFavorite(title);
+    return "" + title + " added to your favorites.";
+}
+
+std::string GoodreadsApp::cmdRemoveFavorite(const std::vector<std::string>& tokens)
+{
+    if (tokens.size() < 2)
+    {
+        return "remove-favorite <bookTitle>";
+    }
+    Reader* reader = dynamic_cast<Reader*>(currentUser);
+    if (!reader)
+    {
+        return "Only readers and authors can remove favorite books.";
+    }
+    const std::string& title = tokens[1];
+    if (!reader->hasFavorite(title))
+    {
+        return "" + title + " is not in your favorites.";
+    }
+    reader->removeFavorite(title);
+    return "" + title + " removed from your favorites.";
+}
+
 std::string GoodreadsApp::validatePublishArgs(const std::vector<std::string>& tokens, int& pageCount, Date& releaseDate) const
 {
     if (!tryParseInt(tokens[4], pageCount) || pageCount < 1)
@@ -756,6 +808,8 @@ std::string GoodreadsApp::cmdHelp() const
         result += "friends [reader]\n";
         result += "add-birthday [date]\n";
         result += "profile [reader]\n";
+        result += "add-favorite <bookTitle>\n";
+        result += "remove-favorite <bookTitle>\n";
     }
     if (userType == UserType::Author)
     {

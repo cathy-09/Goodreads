@@ -49,6 +49,11 @@ bool Reader::hasBook(const std::string& title) const
     return false;
 }
 
+bool Reader::hasFavorite(const std::string& title) const
+{
+    return std::find(favorites.begin(), favorites.end(), title) != favorites.end();
+}
+
 Shelf* Reader::findShelf(const std::string& name)
 {
     for (auto& shelf : shelves)

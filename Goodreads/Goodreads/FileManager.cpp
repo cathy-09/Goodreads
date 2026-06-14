@@ -242,7 +242,10 @@ std::vector<std::string> FileManager::splitByDelimiterList(const std::string& en
 		}
 		token += charche;
 	}
-	result.push_back(token);
+	if (!token.empty())
+	{
+		result.push_back(token);
+	}
 	return result;
 }
 
