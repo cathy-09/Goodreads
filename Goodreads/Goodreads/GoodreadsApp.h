@@ -16,6 +16,9 @@ private:
 	User* currentUser = nullptr;
 	std::string dataFile;
 
+	void newLine();
+	void newLineConst() const;
+
 	User* findUserMutable(const std::string& username);
 	const User* findUser(const std::string& username) const;
 
