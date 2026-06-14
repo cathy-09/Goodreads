@@ -51,14 +51,26 @@ bool Search::matches(const std::string& query, const std::string& target)
     {
         return true;
     }
-    if (smallQuery.size() > smallTarget.size())
+    if (smallQuery.size() < 5 || smallQuery.size() > smallTarget.size())
     {
         return false;
     }
+
+    int maxErrors;
+
+    if (smallQuery.size() >= 8)
+    {
+        maxErrors = 2;
+    }
+    else
+    {
+        maxErrors = 1;
+    }
+
     for (size_t i = 0; i <= smallTarget.size() - smallQuery.size(); ++i)
     {
         std::string targetSubstring = substring(smallTarget, i, smallQuery.size());
-        if (countDifferences(smallQuery, targetSubstring) <= 2)
+        if (countDifferences(smallQuery, targetSubstring) <= maxErrors)
         {
             return true;
         }

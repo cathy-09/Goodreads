@@ -35,14 +35,17 @@ system
 New book published by author MariaAuthor: Foundation
 BookNotice
 0
-1
+2
 Dune
 PlanToRead
 0
+Foundation
+Reading
+4
 1
 want-to-reread
 20.06.2026
-Dune
+Dune|Foundation
 
 29.02.2000
 Author
@@ -89,7 +92,7 @@ MariaAuthor
 PelicanBooks
 
 sci-fi
-0.00
-0
+4.00
+1
 01.05.1951
 244
