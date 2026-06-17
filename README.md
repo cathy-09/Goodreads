@@ -2,11 +2,20 @@
 
 <div align="center">
 
+<div align="center">
+
 # 📚 Goodreads 📚
-### Курсов проект по Обектно-ориентирано програмиране (практикум) 
-· ФМИ, СУ „Св. Климент Охридски" 
-<br>
-· 2025/2026
+
+<div style="margin-top: 15px; margin-bottom: 10px;">
+  <h3>Курсов проект по Обектно-ориентирано програмиране (практикум)</h3>
+</div>
+<div style="margin-top: 5px; color: #555;">
+  ФМИ, СУ „Св. Климент Охридски"
+</div>
+<div style="margin-top: 25px; font-weight: bold; color: #888;">
+  *2025/2026*
+</div>
+</div>
 ---
 
 <div align="center">
