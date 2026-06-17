@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<hr style="height: 1px; border: none; background-color: #6a0dad; width: 100%; margin: 20px 0;">
+<hr style="height: 0.5px; border: none; background-color: rgba(106, 13, 173, 0.4); width: 100%; margin: 20px 0;">
 
 <div style="margin-top: 15px; margin-bottom: 10px;">
   <h3>Курсов проект по Обектно-ориентирано програмиране (практикум)</h3>
@@ -15,7 +15,7 @@
 </div>
 </div>
 
-<hr style="height: 1px; border: none; background-color: #6a0dad; width: 100%; margin: 20px 0;">
+<hr style="height: 0.5px; border: none; background-color: rgba(106, 13, 173, 0.4); width: 100%; margin: 20px 0;">
 
 <div align="center">
 <blockquote>
