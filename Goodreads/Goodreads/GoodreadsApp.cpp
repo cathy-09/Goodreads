@@ -793,6 +793,7 @@ void GoodreadsApp::unlinkAuthorFromPublisher(Author* author, const std::string& 
 
 std::string GoodreadsApp::cmdHelp() const
 {
+    std::cout << "\n";
     std::string result;
     result += "Available Commands\n";
     result += "help\n";
@@ -847,6 +848,10 @@ std::string GoodreadsApp::cmdHelp() const
 
 std::string GoodreadsApp::cmdRegister(const std::vector<std::string>& tokens)
 {
+    if (currentUser)
+    {
+        return "You must log out before registering a new account.";
+    }
     if (tokens.size() < 4)
     {
         return "register <username> <password> <reader|author|publisher>";
