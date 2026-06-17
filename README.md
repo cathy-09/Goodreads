@@ -5,7 +5,7 @@
 <hr style="height: 0.5px; border: none; background-color: rgba(106, 13, 173, 0.4); width: 100%; margin: 20px 0;">
 
 <div style="margin-top: 15px; margin-bottom: 10px;">
-  <h3>Курсов проект по Обектно-ориентирано програмиране (практикум)</h3>
+  <h3>📚Курсов проект по Обектно-ориентирано програмиране (практикум)📚</h3>
 </div>
 <div style="margin-top: 5px; color: #555;">
   ФМИ, СУ „Св. Климент Охридски"
