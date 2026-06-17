@@ -2,8 +2,6 @@
 
 <div align="center">
 
-<div align="center">
-
 # 📚 Goodreads 📚
 
 <div style="margin-top: 15px; margin-bottom: 10px;">
@@ -16,7 +14,8 @@
   2025/2026
 </div>
 </div>
----
+
+<hr style="border: 1px solid #6a0dad; width: 25%;">
 
 <div align="center">
 <blockquote>
