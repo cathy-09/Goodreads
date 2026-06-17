@@ -615,6 +615,10 @@ std::string GoodreadsApp::formatReaderProfile(const Reader* reader) const
                 result += "Publisher: " + book->getPublisher() + "\n";
                 result += "Pages: " + FileManager::intToString(book->getPageCount()) + "\n";
                 result += "Avg rating: " + FileManager::doubleToString(book->getAverageRating()) + "/5\n";
+                if (!book->getSummary().empty())
+                {
+                    result += "Synopsis: " + book->getSummary() + "\n";
+                }
                 if (!book->getGenres().empty())
                 {
                     result += "Genres: ";
@@ -625,6 +629,7 @@ std::string GoodreadsApp::formatReaderProfile(const Reader* reader) const
                     }
                     result += "\n";
                 }
+                result += "\n";
             }
         }
     }
