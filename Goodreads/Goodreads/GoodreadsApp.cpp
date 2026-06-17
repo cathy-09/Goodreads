@@ -635,6 +635,24 @@ std::string GoodreadsApp::formatReaderProfile(const Reader* reader) const
     }
     result += formatShelves(reader);
     result += formatFavorites(reader);
+
+    const Author* author = dynamic_cast<const Author*>(reader);
+    if (author)
+    {
+        const auto& publishers = author->getPublishers();
+        result += "\nWorking with publishers (" + FileManager::intToString((int)publishers.size()) + "):\n";
+        if (publishers.empty())
+        {
+            result += "  (none)\n";
+        }
+        else
+        {
+            for (const auto& pubName : publishers)
+            {
+                result += "  - " + pubName + "\n";
+            }
+        }
+    }
     return result;
 }
 
@@ -1496,6 +1514,12 @@ std::string GoodreadsApp::cmdAcceptOffer(const std::vector<std::string>& tokens)
     if (!publisher)
     {
         return "The publisher no longer exists.";
+    }
+
+    if (author->worksWithPublisher(publisher->getUsername()))
+    {
+        message->markRead();
+        return "You are already working with publisher " + publisher->getUsername() + ".";
     }
 
     author->addPublisher(publisher->getUsername());
