@@ -666,6 +666,8 @@ User not found: ghostauthor
 
 ## Автор 
 
+<hr style="height: 0.5px; border: none; background-color: rgba(106, 13, 173, 0.4); width: 100%; margin: 20px 0;">
+
 ```yaml
 Име: "Katerina Dimitrova"
 Факултет: Софийски университет „Св. Климент Охридски“, ФМИ  
@@ -698,5 +700,7 @@ User not found: ghostauthor
   <img src="https://cdn.simpleicons.org/threads/FFFFFF" height="48" />
 </a>
 </div>
+
+<hr style="height: 0.5px; border: none; background-color: rgba(106, 13, 173, 0.4); width: 100%; margin: 20px 0;">
 
 <img src="https://capsule-render.vercel.app/api?type=waving&height=140&section=footer&color=gradient&customColorList=12,20,24,30" width="100%" />
