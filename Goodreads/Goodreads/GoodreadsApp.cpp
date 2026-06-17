@@ -11,12 +11,12 @@
 
 GoodreadsApp::GoodreadsApp(const std::string& dataFile) : dataFile(dataFile)
 {
-	FileManager::load(dataFile, users, books);
+    FileManager::load(dataFile, users, books);
 }
 
 GoodreadsApp::~GoodreadsApp()
 {
-	FileManager::save(dataFile, users, books);
+    FileManager::save(dataFile, users, books);
 }
 
 void GoodreadsApp::run()
@@ -68,7 +68,7 @@ void GoodreadsApp::run()
             output = cmdSearch(tokens);
         }
         else if (cmd == "follow")
-        { 
+        {
             output = cmdFollow(tokens);
         }
         else if (cmd == "add-book")
@@ -120,8 +120,8 @@ void GoodreadsApp::run()
             output = cmdAddBirthday(tokens);
         }
         else if (cmd == "profile")
-        { 
-            output = cmdProfile(tokens); 
+        {
+            output = cmdProfile(tokens);
         }
         else if (cmd == "add-favorite")
         {
@@ -165,11 +165,6 @@ void GoodreadsApp::run()
 }
 
 void GoodreadsApp::newLine()
-{
-    std::cout << std::endl;
-}
-
-void GoodreadsApp::newLineConst() const
 {
     std::cout << std::endl;
 }
@@ -433,11 +428,8 @@ const Reader* GoodreadsApp::resolveTargetReader(const std::string& readerName, s
 
 std::string GoodreadsApp::formatShelf(const Shelf* shelf) const
 {
-    std::string result = "Shelf: " + shelf->getName() + " (" + FileManager::intToString(shelf->size()) + " books)";
-    newLineConst();
-
-    result += "Created: " + shelf->getCreatedAt().toDateString();
-    newLineConst();
+    std::string result = "Shelf: " + shelf->getName() + " (" + FileManager::intToString(shelf->size()) + " books)\n";
+    result += "Created: " + shelf->getCreatedAt().toDateString() + "\n";
 
     if (shelf->getBooks().empty())
     {
@@ -481,8 +473,7 @@ std::string GoodreadsApp::formatMessage(const Message& message, int index) const
     {
         result += " [New Book]";
     }
-    result += ": " + message.getContent();
-    newLineConst();
+    result += ": " + message.getContent() + "\n";
     return result;
 }
 
@@ -518,8 +509,7 @@ const Reader* GoodreadsApp::resolveReader(const std::string& username, std::stri
 
 std::string GoodreadsApp::formatFriendsList(const Reader* targetReader) const
 {
-    std::string result = "Friends of " + targetReader->getUsername() + ":";
-    newLineConst();
+    std::string result = "Friends of " + targetReader->getUsername() + ":\n";
     bool hasFriends = false;
 
     for (const auto& followerName : targetReader->getFollowers())
@@ -533,16 +523,14 @@ std::string GoodreadsApp::formatFriendsList(const Reader* targetReader) const
 
         if (other->hasFollower(targetReader->getUsername()))
         {
-            result += "  " + followerName + " (" +User::userTypeString(other->type()) + ")";
-            newLineConst();
+            result += "  " + followerName + " (" + User::userTypeString(other->type()) + ")\n";
             hasFriends = true;
         }
     }
 
     if (!hasFriends)
     {
-        result += "  (none)";
-        newLineConst();
+        result += "  (none)\n";
     }
 
     return result;
@@ -563,42 +551,32 @@ std::string GoodreadsApp::parseBirthday(const std::string& dateStr, Date& birthd
 
 std::string GoodreadsApp::formatPublisherProfile(const User* user) const
 {
-    std::string result = " " + user->getUsername() + " (Publisher) ";
-    newLineConst();
-    result += "Registered: " + user->getRegistrationDate().toDateString();
-    newLineConst();
-    result += "Followers: " + FileManager::intToString((int)user->getFollowers().size());
-    newLineConst();
+    std::string result = " " + user->getUsername() + " (Publisher) \n";
+    result += "Registered: " + user->getRegistrationDate().toDateString() + "\n";
+    result += "Followers: " + FileManager::intToString((int)user->getFollowers().size()) + "\n";
     return result;
 }
 
 std::string GoodreadsApp::formatShelves(const Reader* reader) const
 {
-    newLineConst();
-    std::string result = "Shelves (" + FileManager::intToString((int)reader->getShelves().size()) + "):";
-    newLineConst();
+    std::string result = "\nShelves (" + FileManager::intToString((int)reader->getShelves().size()) + "):\n";
     for (const auto& shelf : reader->getShelves())
     {
-        result += "  " + shelf.getName() + " (" + FileManager::intToString(shelf.size()) + " books)";
-        newLineConst();
+        result += "  " + shelf.getName() + " (" + FileManager::intToString(shelf.size()) + " books)\n";
     }
     return result;
 }
 
 std::string GoodreadsApp::formatFavorites(const Reader* reader) const
 {
-    newLineConst();
-    std::string result = "Favorite books (" + FileManager::intToString((int)reader->getFavorites().size()) + "):";
-    newLineConst();
+    std::string result = "\nFavorite books (" + FileManager::intToString((int)reader->getFavorites().size()) + "):\n";
     if (reader->getFavorites().empty())
     {
-        return result + "  (none)";
-        newLineConst();
+        return result + "  (none)\n";
     }
     for (const auto& fav : reader->getFavorites())
     {
-        result += "  " + fav;
-        newLineConst();
+        result += "  " + fav + "\n";
     }
     return result;
 }
@@ -606,51 +584,37 @@ std::string GoodreadsApp::formatFavorites(const Reader* reader) const
 std::string GoodreadsApp::formatReaderProfile(const Reader* reader) const
 {
     std::string result = " " + reader->getUsername();
-    result += " (" + User::userTypeString(reader->type()) + ")";
-    newLineConst();
-    result += "Registered: " + reader->getRegistrationDate().toDateString();
-    newLineConst();
+    result += " (" + User::userTypeString(reader->type()) + ")\n";
+    result += "Registered: " + reader->getRegistrationDate().toDateString() + "\n";
     if (reader->getBirthday())
     {
-        result += "Birthday: " + reader->getBirthday()->toDateString();
-        newLineConst();
+        result += "Birthday: " + reader->getBirthday()->toDateString() + "\n";
     }
-    result += "Followers: " + FileManager::intToString((int)reader->getFollowers().size());
-    newLineConst();
+    result += "Followers: " + FileManager::intToString((int)reader->getFollowers().size()) + "\n";
 
     const auto& bookEntries = reader->getBooks();
-    newLineConst();
-    result += "Books (" + FileManager::intToString((int)bookEntries.size()) + "):";
-    newLineConst();
+    result += "\nBooks (" + FileManager::intToString((int)bookEntries.size()) + "):\n";
     if (bookEntries.empty())
     {
-        result += "  (none)";
-        newLineConst();
+        result += "  (none)\n";
     }
     else
     {
         for (const auto& entry : bookEntries)
         {
-            result += " " + entry.getBookTitle();
-            newLineConst();
-            result += "Status: " + BookEntry::statusToString(entry.getStatus());
-            newLineConst();
+            result += " " + entry.getBookTitle() + "\n";
+            result += "Status: " + BookEntry::statusToString(entry.getStatus()) + "\n";
             if (entry.getRating() > 0)
             {
-                result += "Your rating: " + FileManager::intToString(entry.getRating()) + "/5";
-                newLineConst();
+                result += "Your rating: " + FileManager::intToString(entry.getRating()) + "/5\n";
             }
             const Book* book = findBook(entry.getBookTitle());
             if (book)
             {
-                result += "Author: " + book->getAuthor();
-                newLineConst();
-                result += "Publisher: " + book->getPublisher();
-                newLineConst();
-                result += "Pages: " + FileManager::intToString(book->getPageCount());
-                newLineConst();
-                result += "Avg rating: " + FileManager::doubleToString(book->getAverageRating()) + "/5";
-                newLineConst();
+                result += "Author: " + book->getAuthor() + "\n";
+                result += "Publisher: " + book->getPublisher() + "\n";
+                result += "Pages: " + FileManager::intToString(book->getPageCount()) + "\n";
+                result += "Avg rating: " + FileManager::doubleToString(book->getAverageRating()) + "/5\n";
                 if (!book->getGenres().empty())
                 {
                     result += "Genres: ";
@@ -673,8 +637,7 @@ std::string GoodreadsApp::formatFollowersList(const std::vector<std::string>& fo
 {
     if (followers.empty())
     {
-        return "  (none)";
-        newLineConst();
+        return "  (none)\n";
     }
     std::string result;
     for (const auto& followerName : followers)
@@ -831,18 +794,12 @@ void GoodreadsApp::unlinkAuthorFromPublisher(Author* author, const std::string& 
 std::string GoodreadsApp::cmdHelp() const
 {
     std::string result;
-    result += "Available Commands";
-    newLineConst();
-    result += "help";
-    newLineConst();
-    result += "register <username> <password> <reader|author|publisher>";
-    newLineConst();
-    result += "login <username> <password>";
-    newLineConst();
-    result += "logout";
-    newLineConst();
-    result += "exit";
-    newLineConst();
+    result += "Available Commands\n";
+    result += "help\n";
+    result += "register <username> <password> <reader|author|publisher>\n";
+    result += "login <username> <password>\n";
+    result += "logout\n";
+    result += "exit\n";
     if (!currentUser)
     {
         return result;
@@ -850,70 +807,40 @@ std::string GoodreadsApp::cmdHelp() const
     UserType userType = currentUser->type();
     if (userType == UserType::Reader || userType == UserType::Author)
     {
-        newLineConst();
-        result += "Reader";
-        newLineConst();
-        result += "search <name>";
-        newLineConst();
-        result += "follow <username>";
-        newLineConst();
-        result += "add-book <bookTitle> <status> [rating]";
-        newLineConst();
-        result += "status: plan-to-read | reading | paused | dropped";
-        newLineConst();
-        result += "create-shelf <name>";
-        newLineConst();
-        result += "delete-shelf <name>";
-        newLineConst();
-        result += "add-to-shelf <bookTitle> <shelfName>";
-        newLineConst();
-        result += "remove-from-shelf <bookTitle> <shelfName>";
-        newLineConst();
-        result += "delete-book <bookTitle>";
-        newLineConst();
-        result += "show-shelf [reader] <shelfName>";
-        newLineConst();
-        result += "show-inbox [job-offers|follow-notices]";
-        newLineConst();
-        result += "read-msg <index>";
-        newLineConst();
-        result += "delete-msg <index>";
-        newLineConst();
-        result += "friends [reader]";
-        newLineConst();
-        result += "add-birthday [date]";
-        newLineConst();
-        result += "profile [reader]";
-        newLineConst();
-        result += "add-favorite <bookTitle>";
-        newLineConst();
-        result += "remove-favorite <bookTitle>";
-        newLineConst();
+        result += "\nReader\n";
+        result += "search <name>\n";
+        result += "follow <username>\n";
+        result += "add-book <bookTitle> <status> [rating]\n";
+        result += "status: plan-to-read | reading | paused | dropped\n";
+        result += "create-shelf <name>\n";
+        result += "delete-shelf <name>\n";
+        result += "add-to-shelf <bookTitle> <shelfName>\n";
+        result += "remove-from-shelf <bookTitle> <shelfName>\n";
+        result += "delete-book <bookTitle>\n";
+        result += "show-shelf [reader] <shelfName>\n";
+        result += "show-inbox [job-offers|follow-notices]\n";
+        result += "read-msg <index>\n";
+        result += "delete-msg <index>\n";
+        result += "friends [reader]\n";
+        result += "add-birthday [date]\n";
+        result += "profile [reader]\n";
+        result += "add-favorite <bookTitle>\n";
+        result += "remove-favorite <bookTitle>\n";
     }
     if (userType == UserType::Author)
     {
-        newLineConst();
-        result += "Author";
-        newLineConst();
-        result += "accept-offer <index>";
-        newLineConst();
-        result += "leave <publisher>";
-        newLineConst();
-        result += "followers";
-        newLineConst();
+        result += "\nAuthor\n";
+        result += "accept-offer <index>\n";
+        result += "leave <publisher>\n";
+        result += "followers\n";
     }
     if (userType == UserType::Publisher)
     {
-        result += "Publisher";
-        newLineConst();
-        result += "publish <bookTitle> <authorName> <releaseDate> <pageCount> <genres...>";
-        newLineConst();
-        result += "add-synopsis <bookTitle> <synopsis>";
-        newLineConst();
-        result += "offer <authorName>";
-        newLineConst();
-        result += "search <name>";
-        newLineConst();
+        result += "Publisher\n";
+        result += "publish <bookTitle> <authorName> <releaseDate> <pageCount> <genres...>\n";
+        result += "add-synopsis <bookTitle> <synopsis>\n";
+        result += "offer <authorName>\n";
+        result += "search <name>\n";
     }
     return result;
 }
@@ -968,7 +895,7 @@ std::string GoodreadsApp::cmdLogin(const std::vector<std::string>& tokens)
     }
     if (currentUser)
     {
-        return "Already logged in as " + currentUser->getUsername() +". Logout first.";
+        return "Already logged in as " + currentUser->getUsername() + ". Logout first.";
     }
     User* foundUser = findUserMutable(tokens[1]);
     if (!foundUser || !foundUser->checkPassword(tokens[2]))
@@ -997,9 +924,7 @@ std::string GoodreadsApp::cmdSearch(const std::vector<std::string>& tokens) cons
         return "search <name>";
     }
     const std::string& searchQuery = tokens[1];
-    newLineConst();
-    std::string result = "Users:";
-    newLineConst();
+    std::string result = "\nUsers:\n";
     bool hasUsers = false;
     for (const auto& userPtr : users)
     {
@@ -1012,26 +937,21 @@ std::string GoodreadsApp::cmdSearch(const std::vector<std::string>& tokens) cons
     }
     if (!hasUsers)
     {
-        result += "(none)";
-        newLineConst();
+        result += "(none)\n";
     }
-    newLineConst();
-    result += "Books:";
-    newLineConst();
+    result += "\nBooks:\n";
     bool hasBooks = false;
     for (const auto& book : books)
     {
         if (Search::matches(searchQuery, book.getTitle()))
         {
-            result += book.getTitle() + " (" + FileManager::doubleToString(book.getAverageRating()) + ")";
-            newLineConst();
+            result += book.getTitle() + " (" + FileManager::doubleToString(book.getAverageRating()) + ")\n";
             hasBooks = true;
         }
     }
     if (!hasBooks)
     {
-        result += "(none)";
-        newLineConst();
+        result += "(none)\n";
     }
 
     return result;
@@ -1609,8 +1529,7 @@ std::string GoodreadsApp::cmdFollowers()
     }
     const auto& followers = currentUser->getFollowers();
     std::string result = "Followers of " + currentUser->getUsername();
-    result += " (" + FileManager::intToString((int)followers.size()) + "):";
-    newLineConst();
+    result += " (" + FileManager::intToString((int)followers.size()) + "):\n";
     result += formatFollowersList(followers);
     return result;
 }
