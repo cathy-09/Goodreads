@@ -141,8 +141,10 @@ ValidationException   FileException     грешки при четене/зап�
 | `Message` | `from`, `content`, `type`, `isRead` |
 | `Date` | `day`, `month`, `year` |
 
-> [!NOTE]
+> [!CAUTION]
 > Заглавието на книгата служи като уникален идентификатор.
+
+> [!NOTE]
 > Рафтовете са уникални в рамките на един читателски профил.
 
 <img src="https://capsule-render.vercel.app/api?type=waving&height=140&section=footer&color=gradient&customColorList=12,20,24,30" width="100%" />
