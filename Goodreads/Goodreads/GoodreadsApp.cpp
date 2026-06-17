@@ -590,23 +590,41 @@ std::string GoodreadsApp::formatReaderProfile(const Reader* reader) const
     {
         result += "Birthday: " + reader->getBirthday()->toDateString() + "\n";
     }
-    const auto& followersList = reader->getFollowers();
 
+    result += formatUserRelations(reader);
+    result += formatReaderBooks(reader);
+    result += formatShelves(reader);
+    result += formatFavorites(reader);
+    result += formatAuthorPublishers(reader);
+
+    return result;
+}
+
+std::string GoodreadsApp::formatStringVector(const std::vector<std::string>& vec) const
+{
+    std::string res;
+    for (size_t i = 0; i < vec.size(); ++i)
+    {
+        if (i > 0)
+        {
+            res += ", ";
+        }
+        res += vec[i];
+    }
+    return res;
+}
+
+std::string GoodreadsApp::formatUserRelations(const Reader* reader) const
+{
+    std::string result;
+
+    const auto& followersList = reader->getFollowers();
     result += "Followers: " + FileManager::intToString((int)followersList.size()) + "\n";
     if (!followersList.empty())
     {
-        result += "  Followers: \n";
-        for (size_t i = 0; i < followersList.size(); ++i)
-        {
-            if (i > 0)
-            {
-                result += "";
-            }
-            result += followersList[i];
-            result += "\n";
-        }
-        result += "\n";
+        result += "  Followers: " + formatStringVector(followersList) + "\n\n";
     }
+
     std::vector<std::string> followingList;
     for (const auto& userPtr : users)
     {
@@ -618,78 +636,73 @@ std::string GoodreadsApp::formatReaderProfile(const Reader* reader) const
     result += "Following: " + FileManager::intToString((int)followingList.size()) + "\n";
     if (!followingList.empty())
     {
-        result += "  Following: \n";
-        for (size_t i = 0; i < followingList.size(); ++i)
-        {
-            if (i > 0)
-            {
-                result += "";
-            }
-            result += followingList[i];
-            result += "\n";
-        }
-        result += "\n";
+        result += "  Following: " + formatStringVector(followingList) + "\n\n";
     }
 
+    return result;
+}
+
+std::string GoodreadsApp::formatReaderBooks(const Reader* reader) const
+{
+    std::string result;
     const auto& bookEntries = reader->getBooks();
+
     result += "\nBooks (" + FileManager::intToString((int)bookEntries.size()) + "):\n";
     if (bookEntries.empty())
+    {
+        result += "  (none)\n";
+        return result;
+    }
+
+    for (const auto& entry : bookEntries)
+    {
+        result += " " + entry.getBookTitle() + "\n";
+        result += "Status: " + BookEntry::statusToString(entry.getStatus()) + "\n";
+        if (entry.getRating() > 0)
+        {
+            result += "Your rating: " + FileManager::intToString(entry.getRating()) + "/5\n";
+        }
+
+        const Book* book = findBook(entry.getBookTitle());
+        if (book)
+        {
+            result += "Author: " + book->getAuthor() + "\n";
+            result += "Publisher: " + book->getPublisher() + "\n";
+            result += "Pages: " + FileManager::intToString(book->getPageCount()) + "\n";
+            result += "Avg rating: " + FileManager::doubleToString(book->getAverageRating()) + "/5\n";
+            if (!book->getSummary().empty())
+            {
+                result += "Synopsis: " + book->getSummary() + "\n";
+            }
+            if (!book->getGenres().empty())
+            {
+                result += "Genres: " + formatStringVector(book->getGenres()) + "\n";
+            }
+            result += "\n";
+        }
+    }
+    return result;
+}
+
+std::string GoodreadsApp::formatAuthorPublishers(const Reader* reader) const
+{
+    std::string result;
+    const Author* author = dynamic_cast<const Author*>(reader);
+    if (!author)
+    {
+        return result;
+    }
+    const auto& publishers = author->getPublishers();
+    result += "\nWorking with publishers (" + FileManager::intToString((int)publishers.size()) + "):\n";
+    if (publishers.empty())
     {
         result += "  (none)\n";
     }
     else
     {
-        for (const auto& entry : bookEntries)
+        for (const auto& pubName : publishers)
         {
-            result += " " + entry.getBookTitle() + "\n";
-            result += "Status: " + BookEntry::statusToString(entry.getStatus()) + "\n";
-            if (entry.getRating() > 0)
-            {
-                result += "Your rating: " + FileManager::intToString(entry.getRating()) + "/5\n";
-            }
-            const Book* book = findBook(entry.getBookTitle());
-            if (book)
-            {
-                result += "Author: " + book->getAuthor() + "\n";
-                result += "Publisher: " + book->getPublisher() + "\n";
-                result += "Pages: " + FileManager::intToString(book->getPageCount()) + "\n";
-                result += "Avg rating: " + FileManager::doubleToString(book->getAverageRating()) + "/5\n";
-                if (!book->getSummary().empty())
-                {
-                    result += "Synopsis: " + book->getSummary() + "\n";
-                }
-                if (!book->getGenres().empty())
-                {
-                    result += "Genres: ";
-                    for (size_t i = 0; i < book->getGenres().size(); ++i)
-                    {
-                        if (i > 0) result += ", ";
-                        result += book->getGenres()[i];
-                    }
-                    result += "\n";
-                }
-                result += "\n";
-            }
-        }
-    }
-    result += formatShelves(reader);
-    result += formatFavorites(reader);
-
-    const Author* author = dynamic_cast<const Author*>(reader);
-    if (author)
-    {
-        const auto& publishers = author->getPublishers();
-        result += "\nWorking with publishers (" + FileManager::intToString((int)publishers.size()) + "):\n";
-        if (publishers.empty())
-        {
-            result += "  (none)\n";
-        }
-        else
-        {
-            for (const auto& pubName : publishers)
-            {
-                result += "  - " + pubName + "\n";
-            }
+            result += "  - " + pubName + "\n";
         }
     }
     return result;

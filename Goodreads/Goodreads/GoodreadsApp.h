@@ -60,6 +60,10 @@ private:
 	std::string formatFavorites(const Reader* reader) const;
 	std::string formatReaderProfile(const Reader* reader) const;
 	std::string formatFollowersList(const std::vector<std::string>& followers) const;
+	std::string formatUserRelations(const Reader* reader) const;
+	std::string formatReaderBooks(const Reader* reader) const;
+	std::string formatAuthorPublishers(const Reader* reader) const;
+	std::string formatStringVector(const std::vector<std::string>& vec) const;
 
 	std::vector<std::string> extractGenres(const std::vector<std::string>& tokens) const;
 
