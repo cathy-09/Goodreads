@@ -111,4 +111,21 @@ Goodreads/
 - **`Author : Reader`** — наследява всичко от читателя (авторите могат да четат, да следват, да имат рафтове и inbox) и добавя списък с публикувани книги и издателства, с които работи.
 - **`Publisher : User`** — управлява списък с автори и публикувани книги. Командите `follow`, `show-inbox`, `read-msg`, `delete-msg` са недостъпни за издателства.
 
+## ⚠️ Йерархия на изключенията ⚠️
+
+```
+std::runtime_error
+        │
+GoodreadsException                 базов клас за изключенията
+        │
+   ┌────┴──────────────┐
+   │                   │
+ValidationException   FileException     грешки при четене/запис във файла
+   │
+   ├── DateException       невалиден формат или невалидна календарна дата
+   └── RatingException     рейтинг извън диапазона [1, 5]
+```
+
+Всяко изключение се хваща локално в съответната `cmd` функция и се връща съобщение към потребителя.
+
 <img src="https://capsule-render.vercel.app/api?type=waving&height=140&section=footer&color=gradient&customColorList=12,20,24,30" width="100%" />
