@@ -233,27 +233,31 @@ ValidationException   FileException     грешки при четене/зап�
 ```text
 register annasmith Passw0rd!2025 reader
 Registered successfully as reader: annasmith
-
+ 
 register annasmith Passw0rd!2025 reader
 Username already taken.
-
+ 
 register ab Passw0rd!2025 reader
 Registration failed: Username must be between 6 and 24 characters long.
-
+ 
 register okusername short reader
 Registration failed: Password must be between 12 and 36 characters.
-
+ 
 register okusername alllowercase123 reader
 Registration failed: Password must contain at least one uppercase letter.
-
+ 
 register okusername ALLUPPERCASE123 reader
 Registration failed: Password must contain at least one lowercase letter.
-
+ 
 register okusername NoSpecialChar reader
 Registration failed: Password must contain at least one non-letter character.
-
-register baduser GoodPass#2025 something
+ 
+register baduser GoodPass#2025 alien
 Unknown type. Use: reader, author, publisher
+ 
+[ако вече сте логнати]
+register anotherone GoodPass#2025 reader
+You must log out before registering a new account.
 ```
 
 #### 🔹 `login` / `logout`
@@ -261,13 +265,13 @@ Unknown type. Use: reader, author, publisher
 ```text
 login annasmith WrongPassword#1
 Invalid username or password.
-
+ 
 login annasmith Passw0rd!2025
 Welcome, annasmith! (Reader)
-
+ 
 login annasmith Passw0rd!2025
 Already logged in as annasmith. Logout first.
-
+ 
 logout
 Goodbye, annasmith!
 ```
@@ -337,13 +341,13 @@ Users:
 firepress (Publisher)
 Books:
 FIRE (5.00)
-
+ 
 search fyre
 Users:
 (none)
 Books:
 FIRE (5.00)
-
+ 
 search xyzxyzxyz
 Users:
 (none)
@@ -358,13 +362,13 @@ Books:
 ```text
 follow fyrelord
 You are now following fyrelord.
-
+ 
 follow fyrelord
 You already follow fyrelord.
-
+ 
 follow annasmith
 You cannot follow yourself.
-
+ 
 follow ghostuser
 User not found: ghostuser
 ```
@@ -378,13 +382,13 @@ User not found: ghostuser
 ```text
 add-book FIRE reading 5
 FIRE added to ur profile.
-
+ 
 add-book FIRE reading 5
 You already have FIRE in your profile.
-
+ 
 add-book Nonexistent reading
 Book not found: Nonexistent
-
+ 
 add-book FIRE badstatus
 Invalid status. Helps for status: plan-to-read, reading, paused, dropped
 ```
@@ -394,13 +398,13 @@ Invalid status. Helps for status: plan-to-read, reading, paused, dropped
 ```text
 create-shelf want-to-reread
 Shelf want-to-reread created.
-
+ 
 create-shelf want-to-reread
 A shelf named want-to-reread already exists.
-
+ 
 delete-shelf want-to-reread
 Shelf want-to-reread deleted.
-
+ 
 delete-shelf want-to-reread
 Shelf want-to-reread does not exist.
 ```
@@ -518,13 +522,17 @@ Birthday removed from your profile.
 
 #### 🪪 `profile [reader]`
 
+Профилът е значително разширен — освен броя последователи, показва и **пълните списъци** с „Followers" и „Following" (когато не са празни), синопсиса на всяка добавена книга (ако издателят го е попълнил с `add-synopsis`), а ако потребителят е автор — и секция със издателствата, с които работи.
+ 
 ```text
 profile
  annasmith (Reader)
-Registered: 26.05.2026
+Registered: 20.06.2026
 Birthday: 14.03.1998
-Followers: 1
-
+Followers: 0
+Following: 3
+  Following: fyrelord, firepress, tolkien
+ 
 Books (1):
  FIRE
 Status: Reading
@@ -533,13 +541,34 @@ Author: tolkien
 Publisher: firepress
 Pages: 320
 Avg rating: 5.00/5
+Synopsis: A tale of dragons and fire.
 Genres: Fantasy, Adventure
-
+ 
 Shelves (1):
   want-to-reread (1 books)
-
+ 
 Favorite books (1):
   FIRE
+```
+ 
+Профил на автор, който работи с издателство (вижда се допълнителната секция):
+ 
+```text
+profile
+ tolkien (Author)
+Registered: 20.06.2026
+Followers: 0
+Following: 0
+ 
+Books (0):
+  (none)
+Shelves (0):
+ 
+Favorite books (0):
+  (none)
+ 
+Working with publishers (1):
+  - firepress
 ```
 
 #### ⭐ `add-favorite` / `remove-favorite <bookName>`
