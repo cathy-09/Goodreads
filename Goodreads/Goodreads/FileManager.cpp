@@ -306,6 +306,7 @@ void FileManager::saveReader(std::ofstream& outFile, const Reader* reader)
 	{
 		writeLine(outFile, "");
 	}
+	saveInbox(outFile, reader->getInbox());
 }
 
 Message FileManager::loadMessage(std::ifstream& inFile)
