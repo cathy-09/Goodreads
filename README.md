@@ -375,32 +375,32 @@ User not found: ghostuser
 `rating` е незадължителен и трябва да е цяло число от 1 до 5 — ако се подаде, директно влияе на средния рейтинг на книгата.
 
 ```text
-> add-book FIRE reading 5
+add-book FIRE reading 5
 FIRE added to ur profile.
 
-> add-book FIRE reading 5
+add-book FIRE reading 5
 You already have FIRE in your profile.
 
-> add-book Nonexistent reading
+add-book Nonexistent reading
 Book not found: Nonexistent
 
-> add-book FIRE badstatus
+add-book FIRE badstatus
 Invalid status. Helps for status: plan-to-read, reading, paused, dropped
 ```
 
 #### 🗂️ `create-shelf` / `delete-shelf <name>`
 
 ```text
-> create-shelf want-to-reread
+create-shelf want-to-reread
 Shelf want-to-reread created.
 
-> create-shelf want-to-reread
+create-shelf want-to-reread
 A shelf named want-to-reread already exists.
 
-> delete-shelf want-to-reread
+delete-shelf want-to-reread
 Shelf want-to-reread deleted.
 
-> delete-shelf want-to-reread
+delete-shelf want-to-reread
 Shelf want-to-reread does not exist.
 ```
 
@@ -410,16 +410,16 @@ Shelf want-to-reread does not exist.
 >  Книгата трябва вече да е добавена в профила (чрез `add-book`), преди да я сложим "на" рафта.
 
 ```text
-> add-to-shelf FIRE want-to-reread
+add-to-shelf FIRE want-to-reread
 FIRE added to shelf want-to-reread.
 
-> add-to-shelf FIRE want-to-reread
+add-to-shelf FIRE want-to-reread
 FIRE is already on shelf want-to-reread.
 
-> remove-from-shelf FIRE want-to-reread
+remove-from-shelf FIRE want-to-reread
 FIRE removed from shelf want-to-reread.
 
-> remove-from-shelf FIRE want-to-reread
+remove-from-shelf FIRE want-to-reread
 FIRE is not on shelf want-to-reread.
 ```
 
@@ -428,10 +428,10 @@ FIRE is not on shelf want-to-reread.
 Маха книгата от профила **и** от всички рафтове, в които участва, и коректно изважда личната оценка от средния рейтинг на книгата.
 
 ```text
-> delete-book FIRE
+delete-book FIRE
 FIRE removed from your profile.
 
-> delete-book FIRE
+delete-book FIRE
 You don't have FIRE in ur profile.
 ```
 
@@ -440,16 +440,16 @@ You don't have FIRE in ur profile.
 Без аргумент за `reader` — гледаш собствените си рафтове. Със `reader` — гледаш чужди рафтове, **но само ако сте приятели**.
 
 ```text
-> show-shelf want-to-reread
+show-shelf want-to-reread
 Shelf: want-to-reread (1 books)
 Created: 20.06.2026
  - FIRE (5.00)
 
-> show-shelf fyrelord want-to-reread
+show-shelf fyrelord want-to-reread
 Access denied. You must be friends with fyrelord to view their shelves.
 
 [след взаимно follow между двамата]
-> show-shelf fyrelord want-to-reread
+show-shelf fyrelord want-to-reread
 Shelf: want-to-reread (0 books)
 Created: 20.06.2026
 (empty)
@@ -458,10 +458,10 @@ Created: 20.06.2026
 #### 📬 `show-inbox [follow-notices]`
 
 ```text
-> show-inbox
+show-inbox
 [1] * From annasmith: annasmith started following you.
 
-> show-inbox follow-notices
+show-inbox follow-notices
 [1] * From annasmith [Follow]: annasmith started following you.
 ```
 
@@ -473,18 +473,18 @@ Created: 20.06.2026
 Съобщение може да бъде изтрито **само след** като е било прочетено.
 
 ```text
-> read-msg 1
+read-msg 1
 Message [1] marked as read.
 
-> delete-msg 1
+delete-msg 1
 Message deleted.
 
-> delete-msg 5
+delete-msg 5
 Invalid index.
 ```
 
 ```text
-> delete-msg 2
+delete-msg 2
 Cannot delete an unread message. Mark it as read first.
 ```
 
@@ -493,32 +493,32 @@ Cannot delete an unread message. Mark it as read first.
 Приятел = потребител, когото следваш **и** който те следва обратно.
 
 ```text
-> friends
+friends
 Friends of annasmith:
   fyrelord (Reader)
 
-> friends ghostuser
+friends ghostuser
 User not found: ghostuser
 ```
 
 #### 🎂 `add-birthday [date]`
 
 ```text
-> add-birthday 14.03.1998
+add-birthday 14.03.1998
 Birthday set to 14.03.1998.
 
-> add-birthday 31.02.2025
+add-birthday 31.02.2025
 Invalid date: Invalid date for that month
 
 //търка рожден ден
-> add-birthday
+add-birthday
 Birthday removed from your profile.
 ```
 
 #### 🪪 `profile [reader]`
 
 ```text
-> profile
+profile
  annasmith (Reader)
 Registered: 26.05.2026
 Birthday: 14.03.1998
@@ -544,19 +544,19 @@ Favorite books (1):
 #### ⭐ `add-favorite` / `remove-favorite <bookName>`
 
 ```text
-> add-favorite FIRE
+add-favorite FIRE
 FIRE added to your favorites.
 
-> add-favorite FIRE
+add-favorite FIRE
 FIRE is already in your favorites.
 
-> remove-favorite FIRE
+remove-favorite FIRE
 FIRE removed from your favorites.
 
-> remove-favorite FIRE
+remove-favorite FIRE
 FIRE is not in your favorites.
 
-> add-favorite Nonexistent
+add-favorite Nonexistent
 You don't have Nonexistent in ur profile. Add it first.
 ```
 
@@ -566,37 +566,37 @@ You don't have Nonexistent in ur profile. Add it first.
 > Същата команда като при читателите, но с филтър само за job offer-и.
 
 ```text
-> show-inbox job-offers
+show-inbox job-offers
 [2]   From firepress [Job Offer]: Publisher firepress is offering you a collaboration.
 ```
 
 #### 🤝 `accept-offer <index>`
 
 ```text
-> accept-offer 2
+accept-offer 2
 You accepted the offer from firepress. You are now working together.
 
-> accept-offer 1
+accept-offer 1
 Message [1] is not a job offer.
 
-> accept-offer 99
+accept-offer 99
 Invalid index.
 ```
 
 #### 👋 `leave <publisher>`
 
 ```text
-> leave firepress
+leave firepress
 You left publisher firepress.
 
-> leave firepress
+leave firepress
 You are not working with publisher firepress.
 ```
 
 #### 👥 `followers`
 
 ```text
-> followers
+followers
 Followers of tolkien (1):
   annasmith (Reader)
 ```
@@ -608,16 +608,16 @@ Followers of tolkien (1):
 > получава автоматично известие.
 
 ```text
-> publish FIRE tolkien 12.05.2024 320 Fantasy Adventure
+publish FIRE tolkien 12.05.2024 320 Fantasy Adventure
 Book FIRE published successfully.
 
-> publish FIRE tolkien 12.05.2024 320 Fantasy
+publish FIRE tolkien 12.05.2024 320 Fantasy
 A book with title FIRE already exists.
 
-> publish FIRE tolkien notadate 320 Fantasy
+publish FIRE tolkien notadate 320 Fantasy
 Invalid date: Date format: DD.MM.YYYY
 
-> publish FIRE tolkien 12.05.2024 -5 Fantasy
+publish FIRE tolkien 12.05.2024 -5 Fantasy
 Page count must be a positive number.
 ```
 
@@ -644,23 +644,23 @@ Page count must be a positive number.
 Синопсисът може да съдържа произволен брой думи — всичко след заглавието на книгата се събира в една анотация. Може да редактираме синопсис само на книга, която сме  публикували.
 
 ```text
-> add-synopsis FIRE A tale of dragons and fire.
+add-synopsis FIRE A tale of dragons and fire.
 Synopsis added to FIRE.
 
-> add-synopsis Ghost Nice book
+add-synopsis Ghost Nice book
 Book not found: Ghost
 ```
 
 #### 💼 `offer <author>`
 
 ```text
-> offer tolkien
+offer tolkien
 Job offer sent to tolkien.
 
-> offer annasmith
+offer annasmith
 annasmith is not an author.
 
-> offer ghostauthor
+offer ghostauthor
 User not found: ghostauthor
 ```
 
@@ -674,7 +674,7 @@ User not found: ghostauthor
 ```
 <br>
 ```yaml
-Контакти:
+Контакти: Това са социалните ми мрежи
 ```
 <div align="center">
 <a href="https://github.com/cathy-09">
