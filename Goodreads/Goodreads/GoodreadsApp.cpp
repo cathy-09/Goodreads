@@ -559,7 +559,7 @@ std::string GoodreadsApp::formatPublisherProfile(const User* user) const
 
 std::string GoodreadsApp::formatShelves(const Reader* reader) const
 {
-    std::string result = "\nShelves (" + FileManager::intToString((int)reader->getShelves().size()) + "):\n";
+    std::string result = "Shelves (" + FileManager::intToString((int)reader->getShelves().size()) + "):\n";
     for (const auto& shelf : reader->getShelves())
     {
         result += "  " + shelf.getName() + " (" + FileManager::intToString(shelf.size()) + " books)\n";
