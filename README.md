@@ -34,9 +34,9 @@
 &nbsp;&nbsp;&nbsp;&nbsp;• [Reader команди](#reader-команди)  
 &nbsp;&nbsp;&nbsp;&nbsp;• [Author команди](#author-команди)  
 &nbsp;&nbsp;&nbsp;&nbsp;• [Publisher команди](#publisher-команди)  
-↳ **[Примерни входни и изходни данни](#примерни-входни-и-изходни-данни-)**
+↳ **[Примерни входни и изходни данни](#примерни-входни-и-изходни-данни)**
 <br>
-↳ [Автор](#-автор-)
+↳ [Автор](#автор)
 
 <hr style="height: 0.5px; border: none; background-color: rgba(106, 13, 173, 0.3); width: 100%; margin: 20px 0;">
 
