@@ -595,7 +595,7 @@ std::string GoodreadsApp::formatReaderProfile(const Reader* reader) const
     result += "Followers: " + FileManager::intToString((int)followersList.size()) + "\n";
     if (!followersList.empty())
     {
-        result += "  Followers: ";
+        result += "  Followers: \n";
         for (size_t i = 0; i < followersList.size(); ++i)
         {
             if (i > 0)
@@ -618,7 +618,7 @@ std::string GoodreadsApp::formatReaderProfile(const Reader* reader) const
     result += "Following: " + FileManager::intToString((int)followingList.size()) + "\n";
     if (!followingList.empty())
     {
-        result += "  Following: ";
+        result += "  Following: \n";
         for (size_t i = 0; i < followingList.size(); ++i)
         {
             if (i > 0)
