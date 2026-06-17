@@ -128,4 +128,21 @@ ValidationException   FileException     грешки при четене/зап�
 
 Всяко изключение се хваща локално в съответната `cmd` функция и се връща съобщение към потребителя.
 
+## 🎨 Модели 🎨
+
+| Клас | Основни данни |
+|---|---|
+| `User` | `username`, `password`, `registrationDate`, `followers` |
+| `Reader` | + `books` (`BookEntry`), `shelves`, `favorites`, `birthday` (опционално), `inbox` |
+| `Author` | + `publishedBooks`, `publishers` |
+| `Publisher` | `authors`, `publishedBooks` |
+| `Book` | `title`, `author`, `publisher`, `summary`, `genres`, `averageRating`, `ratingCount`, `releaseDate`, `pageCount` |
+| `Shelf` | `name`, `books`, `createdAt` (брой книги се връща чрез `size()`) |
+| `Message` | `from`, `content`, `type`, `isRead` |
+| `Date` | `day`, `month`, `year` |
+
+> [!NOTE]
+> Заглавието на книгата служи като уникален идентификатор.
+> Рафтовете са уникални в рамките на един читателски профил.
+
 <img src="https://capsule-render.vercel.app/api?type=waving&height=140&section=footer&color=gradient&customColorList=12,20,24,30" width="100%" />
