@@ -133,8 +133,8 @@ ValidationException   FileException     грешки при четене/зап�
 | Клас | Основни данни |
 |---|---|
 | `User` | `username`, `password`, `registrationDate`, `followers` |
-| `Reader` | + `books` (`BookEntry`), `shelves`, `favorites`, `birthday` (опционално), `inbox` |
-| `Author` | + `publishedBooks`, `publishers` |
+| `Reader` | `books` (`BookEntry`), `shelves`, `favorites`, `birthday` (опционално), `inbox` |
+| `Author` | `publishedBooks`, `publishers` |
 | `Publisher` | `authors`, `publishedBooks` |
 | `Book` | `title`, `author`, `publisher`, `summary`, `genres`, `averageRating`, `ratingCount`, `releaseDate`, `pageCount` |
 | `Shelf` | `name`, `books`, `createdAt` (брой книги се връща чрез `size()`) |
