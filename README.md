@@ -36,7 +36,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;• [Author команди](#-author-команди-в-допълнение-към-reader)  
 &nbsp;&nbsp;&nbsp;&nbsp;• [Publisher команди](#-publisher-команди)  
 ↳ **[Примерни входни и изходни данни](#-примерни-входни-и-изходни-данни)** 
-↳ **[Автор](#-автор)** 
+↳ [Автор](#-автор)
 <hr style="height: 0.5px; border: none; background-color: rgba(106, 13, 173, 0.3); width: 100%; margin: 20px 0;">
 
 ## 📖 Описание на проекта 📖
