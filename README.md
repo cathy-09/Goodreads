@@ -2,7 +2,7 @@
 
 <div align="center">
 
-# 📚 Goodreads 📚
+<hr style="border: 1px solid #6a0dad; width: 10%;">
 
 <div style="margin-top: 15px; margin-bottom: 10px;">
   <h3>Курсов проект по Обектно-ориентирано програмиране (практикум)</h3>
@@ -15,7 +15,7 @@
 </div>
 </div>
 
-<hr style="border: 1px solid #6a0dad; width: 25%;">
+<hr style="border: 1px solid #6a0dad; width: 10%;">
 
 <div align="center">
 <blockquote>
