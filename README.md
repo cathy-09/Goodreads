@@ -13,7 +13,7 @@
   ФМИ, СУ „Св. Климент Охридски"
 </div>
 <div style="margin-top: 25px; font-weight: bold; color: #888;">
-  *2025/2026*
+  2025/2026
 </div>
 </div>
 ---
