@@ -673,9 +673,11 @@ User not found: ghostauthor
 Курс: I
 ```
 <br>
+
 ```yaml
 Контакти: Това са социалните ми мрежи
 ```
+
 <div align="center">
 <a href="https://github.com/cathy-09">
   <img src="https://skillicons.dev/icons?i=github" height="48" />
