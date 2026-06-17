@@ -590,7 +590,46 @@ std::string GoodreadsApp::formatReaderProfile(const Reader* reader) const
     {
         result += "Birthday: " + reader->getBirthday()->toDateString() + "\n";
     }
-    result += "Followers: " + FileManager::intToString((int)reader->getFollowers().size()) + "\n";
+    const auto& followersList = reader->getFollowers();
+
+    result += "Followers: " + FileManager::intToString((int)followersList.size()) + "\n";
+    if (!followersList.empty())
+    {
+        result += "  Followers: ";
+        for (size_t i = 0; i < followersList.size(); ++i)
+        {
+            if (i > 0)
+            {
+                result += "";
+            }
+            result += followersList[i];
+            result += "\n";
+        }
+        result += "\n";
+    }
+    std::vector<std::string> followingList;
+    for (const auto& userPtr : users)
+    {
+        if (userPtr->hasFollower(reader->getUsername()))
+        {
+            followingList.push_back(userPtr->getUsername());
+        }
+    }
+    result += "Following: " + FileManager::intToString((int)followingList.size()) + "\n";
+    if (!followingList.empty())
+    {
+        result += "  Following: ";
+        for (size_t i = 0; i < followingList.size(); ++i)
+        {
+            if (i > 0)
+            {
+                result += "";
+            }
+            result += followingList[i];
+            result += "\n";
+        }
+        result += "\n";
+    }
 
     const auto& bookEntries = reader->getBooks();
     result += "\nBooks (" + FileManager::intToString((int)bookEntries.size()) + "):\n";
