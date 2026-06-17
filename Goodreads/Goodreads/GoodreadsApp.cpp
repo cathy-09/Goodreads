@@ -865,7 +865,7 @@ std::string GoodreadsApp::cmdRegister(const std::vector<std::string>& tokens)
     }
     try
     {
-        Date today(26, 5, 2026);
+        Date today(20, 6, 2026);
         std::unique_ptr<User> newUser;
         if (typeStr == "reader")
         {
