@@ -1,0 +1,172 @@
+6
+Reader
+TomekV
+12345678910Va!
+26.05.2026
+Katerina
+2
+FIRE
+Reading
+5
+Snow
+Reading
+4
+2
+NK
+20.06.2026
+FIRE
+HK
+20.06.2026
+
+
+
+2
+Katerina
+Katerina started following you.
+FollowNotice
+0
+system
+New book published by author Authors: Mein_Kampf
+BookNotice
+0
+Reader
+Publisher
+12345678910Va!
+26.05.2026
+
+0
+0
+
+
+0
+Publisher
+Publishers
+12345678910Va!
+26.05.2026
+
+Authors
+FIRE|Snow|Katerina|Mein_Kampf
+Publisher
+Author
+12345678910Va!
+26.05.2026
+TomekV
+Authors
+
+Author
+Authors
+12345678910Va!
+26.05.2026
+TomekV
+0
+0
+
+
+13
+Publishers
+Publisher Publishers is offering you a collaboration.
+JobOffer
+0
+Publishers
+Publisher Publishers is offering you a collaboration.
+JobOffer
+0
+Publishers
+Publisher Publishers is offering you a collaboration.
+JobOffer
+1
+Publishers
+Publisher Publishers is offering you a collaboration.
+JobOffer
+1
+Publishers
+Publisher Publishers is offering you a collaboration.
+JobOffer
+1
+Publishers
+Publisher Publishers is offering you a collaboration.
+JobOffer
+0
+Publishers
+Publisher Publishers is offering you a collaboration.
+JobOffer
+0
+Publishers
+Publisher Publishers is offering you a collaboration.
+JobOffer
+0
+Publishers
+Publisher Publishers is offering you a collaboration.
+JobOffer
+0
+Publishers
+Publisher Publishers is offering you a collaboration.
+JobOffer
+1
+Publishers
+Publisher Publishers is offering you a collaboration.
+JobOffer
+0
+Author
+Publisher Author is offering you a collaboration.
+JobOffer
+1
+TomekV
+TomekV started following you.
+FollowNotice
+0
+Mein_Kampf
+Publishers|Author
+Reader
+Katerina
+12345678910Va!
+26.05.2026
+TomekV
+2
+Katerina
+Reading
+5
+FIRE
+Dropped
+4
+0
+Katerina
+27.02.2006
+0
+4
+FIRE
+tolkien
+Publishers
+ewyfwbehfyuvweybwbywie ywegyfiwbeubfwi
+Fantasy|Adventure
+4.50
+2
+12.05.2024
+320
+Snow
+tolkien
+Publishers
+Kato Kati
+Fantasy|Adventure
+4.00
+1
+12.10.0001
+320
+Katerina
+tolkien
+Publishers
+
+Fantasy|Adventure|Drama
+5.00
+1
+27.02.0001
+320
+Mein_Kampf
+Authors
+Publishers
+
+Comedy
+0.00
+0
+20.04.1889
+725
