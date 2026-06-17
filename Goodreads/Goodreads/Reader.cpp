@@ -13,6 +13,22 @@ UserType Reader::type() const
     return UserType::Reader;
 }
 
+void Reader::receiveMessage(const Message& message)
+{
+    inbox.push_back(message);
+}
+
+const std::vector<Message>& Reader::getInbox() const
+{
+    return inbox;
+}
+
+std::vector<Message>& Reader::getInbox()
+{
+    return inbox;
+}
+
+
 BookEntry* Reader::findBook(const std::string& title)
 {
     for (auto& entry : books)

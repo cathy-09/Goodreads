@@ -38,11 +38,6 @@ void User::removeFollower(const std::string& follower)
 	}
 }
 
-void User::receiveMessage(const Message& message)
-{
-	inbox.push_back(message);
-}
-
 void User::validateUsername(const std::string& username)
 {
 	if (username.size() < 6 || username.size() > 24)
@@ -126,16 +121,6 @@ const Date& User::getRegistrationDate() const
 const std::vector<std::string>& User::getFollowers() const
 {
 	return followers;
-}
-
-const std::vector<Message>& User::getInbox() const
-{
-	return inbox;
-}
-
-std::vector<Message>& User::getInbox()
-{
-	return inbox;
 }
 
 void User::setUsername(const std::string& username)

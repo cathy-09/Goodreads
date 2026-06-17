@@ -21,7 +21,7 @@ void FileManager::save(const std::string& filename, const std::vector<std::uniqu
 		writeLine(file, user->getPassword());
 		writeLine(file, user->getRegistrationDate().toDateString());
 		writeLine(file, encodeList(user->getFollowers()));
-		saveInbox(file, user->getInbox());
+		//saveInbox(file, user->getInbox());
 		if (user->type() == UserType::Reader || user->type() == UserType::Author)
 		{
 			saveReader(file, static_cast<const Reader*>(user));
@@ -95,7 +95,7 @@ void FileManager::load(const std::string& filename, std::vector<std::unique_ptr<
 		{
 			user->addFollower(followerName);
 		}
-		loadInbox(inputFile, user.get());
+		//loadInbox(inputFile, user.get());
 		if (userTypeString == "Reader" || userTypeString == "Author")
 		{
 			loadReader(inputFile, static_cast<Reader*>(user.get()));
@@ -325,12 +325,12 @@ Message FileManager::loadMessage(std::ifstream& inFile)
 	return message;
 }
 
-void FileManager::loadInbox(std::ifstream& inFile, User* user)
+void FileManager::loadInbox(std::ifstream& inFile, Reader* reader)
 {
 	int n = parseIntString(readLine(inFile));
 	for (int i = 0; i < n; ++i)
 	{
-		user->receiveMessage(loadMessage(inFile));
+		reader->receiveMessage(loadMessage(inFile));
 	}
 }
 
@@ -371,6 +371,7 @@ void FileManager::loadReader(std::ifstream& inFile, Reader* reader)
 	{
 		reader->setBirthday(Date::parserForDates(birthdayString));
 	}
+	loadInbox(inFile, reader);
 }
 
 double FileManager::parseDouble(const std::string& text)

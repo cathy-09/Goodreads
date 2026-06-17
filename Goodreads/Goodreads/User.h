@@ -18,7 +18,6 @@ private:
 	std::string password;
 	Date registrationDate;
 	std::vector<std::string> followers;
-	std::vector<Message> inbox;
 public:
 	User() = default;
 	User(const std::string& username, const std::string& password, const Date& registrationDate);
@@ -27,14 +26,11 @@ public:
 	void addFollower(const std::string& follower);
 	bool hasFollower(const std::string& follower) const;
 	void removeFollower(const std::string& follower);
-	void receiveMessage(const Message& message);
 
 	const std::string& getUsername() const;
 	const std::string& getPassword() const;
 	const Date& getRegistrationDate() const;
 	const std::vector<std::string>& getFollowers() const;
-	const std::vector<Message>& getInbox() const;
-	std::vector<Message>& getInbox();
 
 	void setUsername(const std::string& username);
 	void setPassword(const std::string& password);

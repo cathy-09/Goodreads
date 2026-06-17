@@ -244,6 +244,11 @@ void GoodreadsApp::notifyFollowers(const std::string& authorName, const std::str
     for (auto& userPtr : users)
     {
         User* user = userPtr.get();
+        Reader* reader = dynamic_cast<Reader*>(user);
+        if (!reader)
+        {
+            continue;
+        }
         if (user->getUsername() == authorName || user->getUsername() == publisherName)
         {
             continue;
@@ -267,7 +272,7 @@ void GoodreadsApp::notifyFollowers(const std::string& authorName, const std::str
         {
             notificationMessage = "New book published by publisher " + publisherName + ": " + bookTitle;
         }
-        user->receiveMessage(Message("system", notificationMessage, MessageType::BookNotice));
+        reader->receiveMessage(Message("system", notificationMessage, MessageType::BookNotice));
     }
 }
 
@@ -799,7 +804,12 @@ std::string GoodreadsApp::validateAuthorTarget(const std::string& authorName, Au
 
 std::string GoodreadsApp::validateMessageIndex(int index, Message*& message)
 {
-    auto& inbox = currentUser->getInbox();
+    Reader* reader = dynamic_cast<Reader*>(currentUser);
+    if (!reader)
+    {
+        return "Only readers and authors have an inbox.";
+    }
+    auto& inbox = reader->getInbox();
     if (index < 1 || index >(int)inbox.size())
     {
         return "Invalid index.";
@@ -1033,6 +1043,11 @@ std::string GoodreadsApp::cmdFollow(const std::vector<std::string>& tokens)
     {
         return "Not logged in.";
     }
+    Reader* selfReader = dynamic_cast<Reader*>(currentUser);
+    if (!selfReader)
+    {
+        return "Only readers and authors can follow other users.";
+    }
     if (tokens.size() < 2)
     {
         return "follow <username>";
@@ -1052,8 +1067,12 @@ std::string GoodreadsApp::cmdFollow(const std::vector<std::string>& tokens)
         return "You already follow " + targetName + ".";
     }
     target->addFollower(currentUser->getUsername());
-    std::string message = currentUser->getUsername() + " started following you.";
-    target->receiveMessage(Message(currentUser->getUsername(), message, MessageType::FollowNotice));
+    Reader* targetReader = dynamic_cast<Reader*>(target);
+    if (targetReader)
+    {
+        std::string message = currentUser->getUsername() + " started following you.";
+        targetReader->receiveMessage(Message(currentUser->getUsername(), message, MessageType::FollowNotice));
+    }
     return "You are now following " + targetName + ".";
 }
 
@@ -1279,11 +1298,15 @@ std::string GoodreadsApp::cmdShowInbox(const std::vector<std::string>& tokens) c
     {
         return "Not logged in.";
     }
-
+    const Reader* reader = dynamic_cast<const Reader*>(currentUser);
+    if (!reader)
+    {
+        return "Only readers and authors have an inbox.";
+    }
     bool jobOffersOnly = tokens.size() >= 2 && tokens[1] == "job-offers";
     bool followsOnly = tokens.size() >= 2 && tokens[1] == "follow-notices";
 
-    const auto& inbox = currentUser->getInbox();
+    const auto& inbox = reader->getInbox();
 
     if (inbox.empty())
     {
@@ -1310,6 +1333,11 @@ std::string GoodreadsApp::cmdShowInbox(const std::vector<std::string>& tokens) c
 
 std::string GoodreadsApp::cmdReadMsg(const std::vector<std::string>& tokens)
 {
+    Reader* reader = dynamic_cast<Reader*>(currentUser);
+    if (!reader)
+    {
+        return "Only readers and authors have an inbox.";
+    }
     if (tokens.size() < 2)
     {
         return "read-msg <index>";
@@ -1319,7 +1347,7 @@ std::string GoodreadsApp::cmdReadMsg(const std::vector<std::string>& tokens)
     {
         return "Invalid index.";
     }
-    auto& inbox = currentUser->getInbox();
+    auto& inbox = reader->getInbox();
     if (index > (int)inbox.size())
     {
         return "Invalid index.";
@@ -1330,6 +1358,11 @@ std::string GoodreadsApp::cmdReadMsg(const std::vector<std::string>& tokens)
 
 std::string GoodreadsApp::cmdDeleteMsg(const std::vector<std::string>& tokens)
 {
+    Reader* reader = dynamic_cast<Reader*>(currentUser);
+    if (!reader)
+    {
+        return "Only readers and authors have an inbox.";
+    }
     if (tokens.size() < 2)
     {
         return "delete-msg <index>";
@@ -1339,7 +1372,7 @@ std::string GoodreadsApp::cmdDeleteMsg(const std::vector<std::string>& tokens)
     {
         return "Invalid index.";
     }
-    auto& inbox = currentUser->getInbox();
+    auto& inbox = reader->getInbox();
     if (index > (int)inbox.size())
     {
         return "Invalid index.";

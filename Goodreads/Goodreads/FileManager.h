@@ -22,7 +22,7 @@ private:
     static void saveReader(std::ofstream& outFile, const Reader* reader);
 
     static Message loadMessage(std::ifstream& inFile);
-    static void loadInbox(std::ifstream& inFile, User* user);
+    static void loadInbox(std::ifstream& inFile, Reader* reader);
     static void loadReader(std::ifstream& inFile, Reader* reader);
 
     static double parseDouble(const std::string& text);

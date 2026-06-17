@@ -1,4 +1,6 @@
 #include "Search.h"
+#include <vector>
+#include <algorithm>
 
 std::string Search::toLowerCase(const std::string& text)
 {
@@ -16,27 +18,38 @@ std::string Search::toLowerCase(const std::string& text)
 
 int Search::countDifferences(const std::string& firstString, const std::string& secondString)
 {
-    int differences = 0;
+    int diffs = 0;
     for (size_t i = 0; i < firstString.size(); ++i)
     {
         if (firstString[i] != secondString[i])
         {
-            ++differences;
+            ++diffs;
         }
     }
-    return differences;
+    return diffs;
 }
 
-std::string Search::substring(const std::string& text, size_t start, size_t length)
+int Search::bestDistance(const std::string& query, const std::string& target)
 {
-    std::string result;
-
-    for (size_t i = start; i < start + length && i < text.size(); i++)
+    if (query.size() > target.size())
     {
-        result += text[i];
+        return static_cast<int>(query.size());
     }
 
-    return result;
+    int minDistance = static_cast<int>(query.size());
+    size_t windowSize = query.size();
+
+    for (size_t i = 0; i <= target.size() - windowSize; ++i)
+    {
+        std::string window = target.substr(i, windowSize);
+        int currentDistance = countDifferences(query, window);
+
+        if (currentDistance < minDistance)
+        {
+            minDistance = currentDistance;
+        }
+    }
+    return minDistance;
 }
 
 bool Search::matches(const std::string& query, const std::string& target)
@@ -55,9 +68,7 @@ bool Search::matches(const std::string& query, const std::string& target)
     {
         return false;
     }
-
     int maxErrors;
-
     if (smallQuery.size() >= 8)
     {
         maxErrors = 2;
@@ -66,14 +77,5 @@ bool Search::matches(const std::string& query, const std::string& target)
     {
         maxErrors = 1;
     }
-
-    for (size_t i = 0; i <= smallTarget.size() - smallQuery.size(); ++i)
-    {
-        std::string targetSubstring = substring(smallTarget, i, smallQuery.size());
-        if (countDifferences(smallQuery, targetSubstring) <= maxErrors)
-        {
-            return true;
-        }
-    }
-    return false;
+    return bestDistance(smallQuery, smallTarget) <= maxErrors;
 }

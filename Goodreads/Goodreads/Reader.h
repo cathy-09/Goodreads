@@ -3,6 +3,7 @@
 #include "BookEntry.h"
 #include "Shelf.h"
 #include <optional>
+#include "Message.h"
 
 class Reader : public User
 {
@@ -11,11 +12,16 @@ private:
 	std::vector<Shelf> shelves;
 	std::vector<std::string> favorites;
 	std::optional<Date> birthday;
+	std::vector<Message> inbox;
 
 public:
 	Reader() = default;
 	Reader(const std::string& username, const std::string& password, const Date& registrationDate);
 	UserType type() const override;
+
+	void receiveMessage(const Message& message);
+	const std::vector<Message>& getInbox() const;
+	std::vector<Message>& getInbox();
 
 	BookEntry* findBook(const std::string& title);
 	const BookEntry* findBook(const std::string& title) const;
