@@ -29,14 +29,12 @@
 ↳ [Йерархия на изключенията](#-йерархия-на-изключенията)  
 ↳ [Модели](#️-модели)  
 ↳ [Запис на данните](#-запис-на-данните)  
-<hr style="height: 0.5px; border: none; background-color: rgba(106, 13, 173, 0.2); width: 50%; margin: 10px 0;">
 ↳ **[Команди и Логика](#-командите)** 
 &nbsp;&nbsp;&nbsp;&nbsp;• [Общи команди за всички](#-общи-команди-всички-потребители)  
 &nbsp;&nbsp;&nbsp;&nbsp;• [Reader команди](#-reader-команди)  
 &nbsp;&nbsp;&nbsp;&nbsp;• [Author команди](#-author-команди-в-допълнение-към-reader)  
 &nbsp;&nbsp;&nbsp;&nbsp;• [Publisher команди](#-publisher-команди)  
 &nbsp;&nbsp;&nbsp;&nbsp;• [Специална логика](#-специални-логика)  
-<hr style="height: 0.5px; border: none; background-color: rgba(106, 13, 173, 0.2); width: 50%; margin: 10px 0;">
 ↳ [Примерни входни и изходни данни](#-примерни-входни-и-изходни-данни)
 <hr style="height: 0.5px; border: none; background-color: rgba(106, 13, 173, 0.3); width: 100%; margin: 20px 0;">
 
