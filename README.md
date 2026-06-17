@@ -699,7 +699,7 @@ User not found: ghostauthor
 <hr style="height: 0.5px; border: none; background-color: rgba(106, 13, 173, 0.4); width: 100%; margin: 20px 0;">
 
 ```yaml
-Име: "Katerina Dimitrova"
+Име: "Катерина Димитрова"
 Факултет: Софийски университет „Св. Климент Охридски“, ФМИ  
 Специалност: Софтуерно инженерство  
 Курс: I
