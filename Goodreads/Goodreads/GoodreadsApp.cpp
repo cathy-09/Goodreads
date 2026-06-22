@@ -1479,8 +1479,6 @@ std::string GoodreadsApp::cmdPublish(const std::vector<std::string>& tokens)
         return "They are not working together.";
     }
 
-    //
-
     if (findBook(title))
     {
         return "A book with title " + title + " already exists.";
