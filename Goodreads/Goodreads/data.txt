@@ -20,13 +20,17 @@ HK
 
 
 
-2
+3
 Katerina
 Katerina started following you.
 FollowNotice
 0
 system
 New book published by author Authors: Mein_Kampf
+BookNotice
+0
+system
+New book published by author Authors and publisher Publishers: kniga
 BookNotice
 0
 Reader
@@ -43,9 +47,9 @@ Publisher
 Publishers
 12345678910Va!
 26.05.2026
-
+TomekV
 Authors
-FIRE|Snow|Katerina|Mein_Kampf
+FIRE|Snow|Katerina|Mein_Kampf|BookTitle|BookT|kniga
 Publisher
 Author
 12345678910Va!
@@ -62,7 +66,7 @@ TomekV
 0
 
 
-13
+14
 Publishers
 Publisher Publishers is offering you a collaboration.
 JobOffer
@@ -115,7 +119,11 @@ TomekV
 TomekV started following you.
 FollowNotice
 0
-Mein_Kampf
+Publishers
+Publisher Publishers is offering you a collaboration.
+JobOffer
+1
+Mein_Kampf|BookT|kniga
 Publishers|Author
 Reader
 Katerina
@@ -133,7 +141,7 @@ Dropped
 Katerina
 27.02.2006
 0
-4
+7
 FIRE
 tolkien
 Publishers
@@ -170,3 +178,30 @@ Comedy
 0
 20.04.1889
 725
+BookTitle
+Ivana
+Publishers
+hsfugfuolg
+fantasy|mistery
+0.00
+0
+20.06.2025
+300
+BookT
+Authors
+Publishers
+asdfghjkl
+fantasy|something
+0.00
+0
+22.05.2023
+357
+kniga
+Authors
+Publishers
+
+scifi
+0.00
+0
+20.06.2026
+100

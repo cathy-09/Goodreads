@@ -232,10 +232,15 @@ void GoodreadsApp::notifyFollowers(const std::string& authorName, const std::str
 {
     User* authorUser = findUserMutable(authorName);
     User* publisherUser = findUserMutable(publisherName);
+
     if (!authorUser || !publisherUser)
     {
         return;
     }
+    /*if (authorUser->hasFollower(publisherUser->getUsername()) && publisherUser->hasFollower(authorUser->getUsername()))
+    {
+
+    }*/
     for (auto& userPtr : users)
     {
         User* user = userPtr.get();
@@ -1453,6 +1458,7 @@ std::string GoodreadsApp::cmdProfile(const std::vector<std::string>& tokens) con
 std::string GoodreadsApp::cmdPublish(const std::vector<std::string>& tokens)
 {
     Publisher* publisher = dynamic_cast<Publisher*>(currentUser);
+
     if (!publisher)
     {
         return "Only publishers can publish books.";
@@ -1464,6 +1470,16 @@ std::string GoodreadsApp::cmdPublish(const std::vector<std::string>& tokens)
 
     const std::string& title = tokens[1];
     const std::string& authorName = tokens[2];
+
+    // Validate publisher is working with author
+    Author* author = dynamic_cast<Author*>(findUserMutable(authorName));
+
+    if (!author->worksWithPublisher(publisher->getUsername()))
+    {
+        return "They are not working together.";
+    }
+
+    //
 
     if (findBook(title))
     {
